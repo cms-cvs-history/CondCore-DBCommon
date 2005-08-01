@@ -1,0 +1,4 @@
+<use name=CondCore/DBCommon>
+<use name=CondFormats/Calibration>
+<bin file=testWriter.cc name=testWriter>
+</bin>
