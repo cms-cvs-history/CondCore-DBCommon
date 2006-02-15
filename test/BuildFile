@@ -3,4 +3,5 @@
 <use name=CondCore/IOVService>
 <bin file=testWriter.cc name=testWriter></bin>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
+<bin file=testServiceLoader.cc name=testServiceLoader></bin>
 </bin>
