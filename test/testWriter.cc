@@ -3,13 +3,15 @@
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
+#include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "CondFormats/Calibration/interface/Pedestals.h"
 #include "CondCore/IOVService/interface/IOV.h"
 #include <string>
 #include <iostream>
 int main(){
   cond::ServiceLoader* loader=new cond::ServiceLoader;
-  loader->loadMessageService();
+  //loader->loadMessageService(cond::Info);
+  loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
   try{
     session->connect(cond::ReadWriteCreate);
