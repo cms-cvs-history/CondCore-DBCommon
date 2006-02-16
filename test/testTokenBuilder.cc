@@ -1,6 +1,6 @@
 #include "CondCore/DBCommon/interface/TokenBuilder.h"
 #include "CondFormats/Calibration/interface/Pedestals.h"
-#include "SealKernel/Exception.h"
+#include "CondCore/DBCommon/interface/Exception.h"
 #include <string>
 #include <iostream>
 int main(){
@@ -14,9 +14,7 @@ int main(){
     std::cout<<"result 1 "<<tk.tokenAsString()<<std::endl;
     tk.resetOID(2);
     std::cout<<"result 2 "<<tk.tokenAsString()<<std::endl;
-  }catch (const seal::Exception &e){
-    std::cout << "test ERROR: "<< e.what() << std::endl;
-  }catch (const std::exception &e) {
+  }catch (const cond::Exception &e){
     std::cout << "test ERROR: "<< e.what() << std::endl;
   }catch(...){
     std::cout<<"funny error"<<std::endl;
