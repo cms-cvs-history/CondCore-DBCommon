@@ -4,4 +4,5 @@
 <bin file=testWriter.cc name=testWriter></bin>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
 <bin file=testServiceLoader.cc name=testServiceLoader></bin>
+<bin file=testDelete.cc name=testDelete></bin>
 </bin>
