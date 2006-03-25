@@ -1,6 +1,6 @@
 #include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "SealKernel/Exception.h"
+#include "POOLCore/Exception.h"
 #include <string>
 #include <iostream>
 int main(){
@@ -8,16 +8,20 @@ int main(){
   try{
     loader->loadMessageService();
     std::cout<<"message service loaded"<<std::endl;
-  }catch(seal::Exception& er){
-    std::cout<<"caught seal exception "<<er.what()<<std::endl;
+  }catch(pool::Exception& er){
+    std::cout<<"caught pool exception "<<er.what()<<std::endl;
+  }catch(std::exception& er){
+    std::cout<<"caught std exception "<<er.what()<<std::endl;
   }catch(...){
     std::cout<<"funny error"<<std::endl;
   }
   try{
     loader->loadAuthenticationService();
     std::cout<<"authentication service loaded"<<std::endl;
-  }catch(seal::Exception& er){
-    std::cout<<"caught seal exception "<<er.what()<<std::endl;
+  }catch(pool::Exception& er){
+    std::cout<<"caught pool exception "<<er.what()<<std::endl;
+  }catch(std::exception& er){
+    std::cout<<"caught std exception "<<er.what()<<std::endl;
   }catch(...){
     std::cout<<"funny error"<<std::endl;
   }
@@ -26,8 +30,10 @@ int main(){
     std::cout<<"streaming service loaded"<<std::endl;
   }catch(cond::Exception& er){
     std::cout<<"caught cond exception "<<er.what()<<std::endl;
-  }catch(seal::Exception& er){
-    std::cout<<"caught seal exception "<<er.what()<<std::endl;
+  }catch(pool::Exception& er){
+    std::cout<<"caught pool exception "<<er.what()<<std::endl;
+  }catch(std::exception& er){
+    std::cout<<"caught std exception "<<er.what()<<std::endl;
   }catch(...){
     std::cout<<"funny error"<<std::endl;
   }

@@ -57,7 +57,7 @@ int main(){
     session->disconnect();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
-  }catch(seal::Exception& er){
+  }catch(std::exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(...){
     std::cout<<"Funny error"<<std::endl;
