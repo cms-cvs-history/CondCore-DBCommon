@@ -4,5 +4,5 @@ block PoolDBCommon   = {
                         string timetype = "runnumber"
                         untracked bool loadBlobStreamer = false
                         untracked uint32 authenticationMethod = 1
-                        untracked uint32 messagelevel = 1
+                        untracked uint32 messagelevel = 0
                         }
