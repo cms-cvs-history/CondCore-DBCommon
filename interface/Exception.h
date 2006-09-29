@@ -15,5 +15,11 @@ namespace cond{
 				   const std::string& current);
     virtual ~noDataForRequiredTimeException() throw();
   };
+  class RefException : public Exception{
+  public:
+    RefException(const std::string& from, 
+		 const std::string& msg);
+    virtual ~RefException() throw(){}
+  };
 }
 #endif
