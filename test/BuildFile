@@ -1,0 +1,7 @@
+<flags GENREFLEX_ARGS="--">
+<use name=rootrflx>
+<use name=CondCore/DBCommon>
+<library name=testDict file=""></library>
+<bin file=testCondObjRef.cc name=testCondObjRef>
+<lib name=testDict>
+</bin>

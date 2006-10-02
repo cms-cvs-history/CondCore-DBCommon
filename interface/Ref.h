@@ -3,6 +3,8 @@
 #include <string>
 #include "DataSvc/Ref.h"
 #include "POOLCore/Exception.h"
+#include "StorageSvc/DbType.h"
+#include "PersistencySvc/Placement.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 namespace cond{
   class DBSession;
@@ -25,15 +27,15 @@ namespace cond{
     virtual ~Ref(){
       if(m_place) delete m_place;
     }
-    void markWrite( const std::string& containerName ){
+    void markWrite( const std::string& containerName ) {
       try{
 	if(!m_place){
 	  m_place = new pool::Placement;
-	  m_place->setTechnology(pool::POOL_RDBMS_StorageType.type().Homogeneous);
+	  m_place->setTechnology(pool::POOL_RDBMS_HOMOGENEOUS_StorageType.type());
 	  m_place->setDatabase(m_session.connectionString(), pool::DatabaseSpecification::PFN);
 	  m_place->setContainerName(containerName);
 	}
-	m_data.markWrite(m_place);
+	m_data.markWrite(*m_place);
       }catch( const pool::Exception& er){
 	throw cond::RefException("markWrite",er.what());
       }
@@ -74,7 +76,7 @@ namespace cond{
     T* operator->() const{
       return this->ptr();
     }
-    T& operator T* () const{
+    T& operator * () const{
       T& result;
       try{
 	result=*m_data;
