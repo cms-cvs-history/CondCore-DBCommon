@@ -15,12 +15,12 @@ namespace cond{
   class Ref{
   public:
     Ref( cond::DBSession& session, const std::string& token ):
-      m_session(session),
+      m_session(&session),
       m_data( pool::Ref<T>(&(session.DataSvc()), token) ),
       m_place(0){
     }
     Ref( cond::DBSession& session, T* obj ):
-      m_session(session),
+      m_session(&session),
       m_data( pool::Ref<T>(&(m_session.DataSvc()), obj) ),
       m_place(0){
     }
@@ -85,14 +85,18 @@ namespace cond{
       }
     }
     // assignment operator
-    Ref<T>& operator=(const Ref<T>& i){
+    /*Ref<T>& operator=(const Ref<T>& i){
       if(this->m_data != i.m_data ){ 
+	m_session=i.m_session;
 	this->m_data=i.m_data;
+	m_place=i.m_place;
       }
       return *this;
     }
+    */
   private:
-    cond::DBSession& m_session;
+    Ref<T>& operator=(const Ref<T>& i);
+    cond::DBSession* m_session;
     pool::Ref<T> m_data;
     pool::Placement* m_place;
   };
