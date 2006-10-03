@@ -20,7 +20,27 @@ int main(){
     cond::Ref<testCondObj> myref(*session,myobj);
     session->startUpdateTransaction();
     myref.markWrite("mycontainer");
+    std::string token=myref.token();
+    std::cout<<"token "<<token<<std::endl;
     session->commit();
+    session->startReadOnlyTransaction();
+    cond::Ref<testCondObj> myinstance(*session,token);
+    std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
+    std::cout<<"read back 100 "<<myinstance->data[100]<<std::endl;
+    session->commit();
+    myinstance->data[1]="updatedstring";
+    myinstance->data.insert(std::make_pair(1000,"newstring"));
+    session->startUpdateTransaction();
+    myinstance.markUpdate();
+    token=myref.token();
+    std::cout<<"same token "<<token<<std::endl;
+    session->commit();
+    session->startReadOnlyTransaction();
+    cond::Ref<testCondObj> myrefback(*session,token);
+    session->commit();
+    std::cout<<"read back 1   "<<myrefback->data[1]<<std::endl;
+    std::cout<<"read back 100 "<<myrefback->data[100]<<std::endl;
+    std::cout<<"read back 1000 "<<myrefback->data[1000]<<std::endl;
     session->disconnect();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
