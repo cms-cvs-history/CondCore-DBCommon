@@ -10,7 +10,7 @@
 //#include <iostream>
 namespace cond{
   TokenBuilder::TokenBuilder(): m_token(new pool::Token){
-    m_token->setTechnology(pool::POOL_RDBMS_StorageType.type());
+    m_token->setTechnology(pool::POOL_RDBMS_HOMOGENEOUS_StorageType.type());
   }
   TokenBuilder::~TokenBuilder(){
     delete m_token;
