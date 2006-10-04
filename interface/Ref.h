@@ -14,6 +14,8 @@ namespace cond{
   template <typename T>
   class Ref{
   public:
+    Ref():m_session(0),m_place(0){
+    }
     Ref( cond::DBSession& session, const std::string& token ):
       m_session(&session),
       m_data( pool::Ref<T>(&(session.DataSvc()), token) ),
@@ -21,7 +23,7 @@ namespace cond{
     }
     Ref( cond::DBSession& session, T* obj ):
       m_session(&session),
-      m_data( pool::Ref<T>(&(m_session.DataSvc()), obj) ),
+      m_data( pool::Ref<T>(&(m_session->DataSvc()), obj) ),
       m_place(0){
     }
     virtual ~Ref(){
@@ -32,7 +34,7 @@ namespace cond{
 	if(!m_place){
 	  m_place = new pool::Placement;
 	  m_place->setTechnology(pool::POOL_RDBMS_HOMOGENEOUS_StorageType.type());
-	  m_place->setDatabase(m_session.connectionString(), pool::DatabaseSpecification::PFN);
+	  m_place->setDatabase(m_session->connectionString(), pool::DatabaseSpecification::PFN);
 	  m_place->setContainerName(containerName);
 	}
 	m_data.markWrite(*m_place);
@@ -84,18 +86,8 @@ namespace cond{
 	throw cond::RefException( "operator * ",er.what() );
       }
     }
-    // assignment operator
-    /*Ref<T>& operator=(const Ref<T>& i){
-      if(this->m_data != i.m_data ){ 
-	m_session=i.m_session;
-	this->m_data=i.m_data;
-	m_place=i.m_place;
-      }
-      return *this;
-    }
-    */
   private:
-    Ref<T>& operator=(const Ref<T>& i);
+    //Ref<T>& operator=(const Ref<T>& i);
     cond::DBSession* m_session;
     pool::Ref<T> m_data;
     pool::Placement* m_place;
