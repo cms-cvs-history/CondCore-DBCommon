@@ -5,6 +5,7 @@
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "testCondObj.h"
+#include <exception>
 #include <string>
 #include <iostream>
 int main(){

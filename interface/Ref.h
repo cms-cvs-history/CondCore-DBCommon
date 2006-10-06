@@ -87,7 +87,6 @@ namespace cond{
       }
     }
   private:
-    //Ref<T>& operator=(const Ref<T>& i);
     cond::DBSession* m_session;
     pool::Ref<T> m_data;
     pool::Placement* m_place;
