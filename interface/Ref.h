@@ -1,5 +1,5 @@
-#ifndef COND_REF_H
-#define COND_REF_H
+#ifndef COND_DBCommon_REF_H
+#define COND_DBCommon_REF_H
 #include <string>
 #include "DataSvc/Ref.h"
 #include "POOLCore/Exception.h"
@@ -15,6 +15,9 @@ namespace cond{
   class Ref{
   public:
     Ref():m_session(0),m_place(0){
+    }
+    Ref( cond::DBSession& session, pool::Ref<T> ref ): 
+      m_session(&session), m_data(ref), m_place(0) {
     }
     Ref( cond::DBSession& session, const std::string& token ):
       m_session(&session),
