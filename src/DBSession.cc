@@ -5,17 +5,19 @@
 #include "FileCatalog/IFileCatalog.h"
 #include "PersistencySvc/DatabaseConnectionPolicy.h"
 #include "PersistencySvc/ISession.h"
+#include "PersistencySvc/IDatabase.h"
 #include "PersistencySvc/ITransaction.h"
 #include "DataSvc/DataSvcFactory.h"
 #include "DataSvc/IDataSvc.h"
 #include "POOLCore/Exception.h"
-cond::DBSession::DBSession( const std::string& con ):m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)), m_catalogcon(""){}
+cond::DBSession::DBSession( const std::string& con ):m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)), m_catalogcon(""),m_db(0){}
 cond::DBSession::DBSession( const std::string& con, 
 			    const std::string& catalogcon )
-  :m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)), m_catalogcon(catalogcon){}
+  :m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)), m_catalogcon(catalogcon), m_db(0){}
 cond::DBSession::~DBSession(){
   delete m_cat;
   delete m_svc;
+  if(m_db) delete m_db;
 }
 void cond::DBSession::setCatalog( const std::string& catalogCon ){
   m_catalogcon=catalogCon;
@@ -83,13 +85,20 @@ void cond::DBSession::commit(){
   try{
     m_svc->session().transaction().commit();
   }catch( const pool::Exception& er){
-    throw cond::Exception( std::string("DBWriter::commit caught pool::Exception ")+ er.what() );
+    throw cond::Exception( std::string("DBSession::commit caught pool::Exception ")+ er.what() );
   }catch( ... ){
-    throw cond::Exception( std::string("DBWriter::commit caught unknown exception ") );
+    throw cond::Exception( std::string("DBSession::commit caught unknown exception ") );
   }
 }
 const std::string cond::DBSession::connectionString() const{
   return m_con;
+}
+std::vector<std::string> cond::DBSession::containers(){
+  if(!m_db){
+    m_db=m_svc->session().databaseHandle(m_con, pool::DatabaseSpecification::PFN);
+    if(!m_db){ throw cond::Exception( "DBSession::containers could not obtain database handle" ); }
+}
+return m_db->containers();
 }
 pool::IDataSvc& cond::DBSession::DataSvc() const{
   return *m_svc;

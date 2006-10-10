@@ -8,4 +8,7 @@
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
 <lib name=testDict>
 </bin>
+<bin file=testContainerIterator.cc name=testContainerIterator>
+<lib name=testDict>
+</bin>
 <bin file=testServiceLoader.cc name=testServiceLoader></bin>
