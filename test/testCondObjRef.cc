@@ -40,6 +40,7 @@ int main(){
     session->startReadOnlyTransaction();
     cond::Ref<testCondObj> myrefback(*session,token);
     session->commit();
+    std::cout<<"ref belongs to container "<<myrefback.containerName()<<std::endl;
     std::cout<<"pointer "<<myrefback.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myrefback->data[1]<<std::endl;
     std::cout<<"read back 100 "<<myrefback->data[100]<<std::endl;

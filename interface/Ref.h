@@ -3,6 +3,7 @@
 #include <string>
 #include "DataSvc/Ref.h"
 #include "POOLCore/Exception.h"
+#include "POOLCore/Token.h"
 #include "StorageSvc/DbType.h"
 #include "PersistencySvc/Placement.h"
 #include "CondCore/DBCommon/interface/Exception.h"
@@ -67,6 +68,10 @@ namespace cond{
     }
     void reset( ){
       m_data.reset() ;
+    }
+    std::string containerName(){
+      std::string contName=m_data.token()->contID();
+      return contName;
     }
     //user does not have ownership
     T* ptr() const{
