@@ -11,9 +11,9 @@ namespace seal{
   //class Handle;
   //class Component;
 }
-  namespace coral{
-  class IRelationalService;
-  }
+//  namespace coral{
+//  class IRelationalService;
+//  }
 /*class IAuthenticationService;
   }
   namespace pool{
@@ -26,20 +26,25 @@ namespace cond{
   //
   class ServiceLoader{
   public:
-    /// factory methold. hand over the ownership to user;
     ServiceLoader();
     ~ServiceLoader();
-    void loadMessageService( cond::MessageLevel level=cond::Error );
-    bool hasMessageService() const;
+    void usePOOLContext();
+    void useOwnContext();
+    seal::Context* context();
+    void loadMessageService( cond::MessageLevel messagelevel=cond::Error );
     void loadAuthenticationService( cond::AuthenticationMethod method=cond::Env );
-    bool hasAuthenticationService() const;
-    coral::IRelationalService& loadRelationalService();
+    void loadRelationalService();
     void loadConnectionService();
     /// load the default streaming service
     void loadBlobStreamingService();
     /// load external streaming service
     void loadBlobStreamingService( const std::string& componentName );
+    //void loadLookupService();    
+    void loadUserMonitoringService();
   private:
+    void initLoader();
+  private:
+    bool m_isPoolContext;
     seal::Context* m_context;
     seal::Handle<seal::ComponentLoader> m_loader;
   };

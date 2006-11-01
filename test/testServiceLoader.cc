@@ -6,6 +6,8 @@
 int main(){
   cond::ServiceLoader* loader=new cond::ServiceLoader;
   try{
+    //loader->usePOOLContext();
+    loader->useOwnContext();
     loader->loadMessageService();
     std::cout<<"message service loaded"<<std::endl;
   }catch(pool::Exception& er){
@@ -37,5 +39,6 @@ int main(){
   }catch(...){
     std::cout<<"funny error"<<std::endl;
   }
+ 
   delete loader;
 }

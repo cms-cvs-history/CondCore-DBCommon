@@ -10,8 +10,9 @@
 #include <iostream>
 int main(){
   cond::ServiceLoader* loader=new cond::ServiceLoader;
-  //loader->loadMessageService(cond::Info);
-  loader->loadMessageService(cond::Error);
+  loader->usePOOLContext();
+  loader->loadMessageService(cond::Info);
+  //loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
   try{
     session->connect(cond::ReadWriteCreate);
