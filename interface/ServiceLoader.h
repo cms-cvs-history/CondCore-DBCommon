@@ -21,6 +21,7 @@ namespace seal{
   }
 */
 namespace cond{
+  class ConnectionConfiguration;
   //
   //wrapper around loading LCG services
   //
@@ -34,13 +35,11 @@ namespace cond{
     void loadMessageService( cond::MessageLevel messagelevel=cond::Error );
     void loadAuthenticationService( cond::AuthenticationMethod method=cond::Env );
     void loadRelationalService();
-    void loadConnectionService();
-    /// load the default streaming service
-    void loadBlobStreamingService();
+    void loadConnectionService(cond::ConnectionConfiguration& config);
     /// load external streaming service
     void loadBlobStreamingService( const std::string& componentName );
     //void loadLookupService();    
-    void loadUserMonitoringService();
+    //void loadUserMonitoringService();
   private:
     void initLoader();
   private:

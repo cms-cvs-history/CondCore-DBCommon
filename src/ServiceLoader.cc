@@ -1,6 +1,7 @@
 #include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/CONDContext.h"
 #include "CondCore/DBCommon/interface/Exception.h"
+#include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
 #include "PluginManager/PluginManager.h"
 #include "SealKernel/Context.h"
 #include "SealKernel/ComponentLoader.h"
@@ -10,6 +11,7 @@
 #include "RelationalAccess/IRelationalService.h"
 #include "RelationalAccess/IConnectionService.h"
 #include "RelationalAccess/IMonitoringService.h"
+#include "RelationalAccess/IConnectionServiceConfiguration.h"
 #include "RelationalStorageService/IBlobStreamingService.h"
 //#include "CondCore/BlobStreamingService/interface/BlobStreamingService.h"
 cond::ServiceLoader::ServiceLoader():m_isPoolContext(true),m_context(0) {
@@ -110,38 +112,39 @@ void cond::ServiceLoader::loadRelationalService(){
   }
   return;
 }
-void cond::ServiceLoader::loadConnectionService(){
+void cond::ServiceLoader::loadConnectionService(cond::ConnectionConfiguration& config){
   if(!m_loader) {
     this->initLoader();
   }
   m_loader->load( "CORAL/Services/ConnectionService" );
-  std::vector< seal::IHandle<coral::IConnectionService> > v_svc;
-  m_context->query( v_svc );
-  if ( v_svc.empty() ) {
+  
+  seal::IHandle<coral::IConnectionService> iHandle=
+  m_context->query<coral::IConnectionService>( "CORAL/Services/ConnectionService" );
+  if (! iHandle ) {
     throw cond::Exception( "could not locate the coral connection service" );
   }
+  coral::IConnectionServiceConfiguration& conserviceConfig = iHandle->configuration();
+  if( config.isConnectionSharingEnabled() ){
+    conserviceConfig.enableConnectionSharing();
+  }
+  conserviceConfig.setConnectionRetrialPeriod( config.connectionRetrialPeriod() );
+  conserviceConfig.setConnectionRetrialTimeOut( config.connectionRetrialTimeOut() );
+  conserviceConfig.setConnectionTimeOut( config.connectionTimeOut() );
   return;
 }
-void cond::ServiceLoader::loadBlobStreamingService(){
+void cond::ServiceLoader::loadBlobStreamingService( const std::string& componentName){
   if(!m_loader) {
     this->initLoader();
   }
-  m_loader->load( "COND/Services/DefaultBlobStreamingService" );
+  if(componentName.empty()){
+    m_loader->load( "COND/Services/DefaultBlobStreamingService" );
+  }else{
+    m_loader->load(componentName);
+  }
   std::vector< seal::IHandle<pool::IBlobStreamingService> > v_svc;
   m_context->query( v_svc );
   if ( v_svc.empty() ) {
     throw cond::Exception( "could not locate the BlobStreamingService" );
-  }
-}
-void cond::ServiceLoader::loadBlobStreamingService( const std::string& componentName ){
-  if(!m_loader) {
-    this->initLoader();
-  }
-  m_loader->load( componentName );  
-  std::vector< seal::IHandle<pool::IBlobStreamingService> > v_svc;
-  m_context->query( v_svc );
-  if ( v_svc.empty() ) {
-    throw cond::Exception( std::string("could not locate the BlobStreamingService ")+componentName );
   }
 }
 /*
@@ -157,7 +160,7 @@ void cond::ServiceLoader::loadBlobStreamingService( const std::string& component
   }
   }
 */
-void cond::ServiceLoader::loadUserMonitoringService(){
+/*void cond::ServiceLoader::loadUserMonitoringService(){
   if(!m_loader) {
     this->initLoader();
   }
@@ -168,3 +171,4 @@ void cond::ServiceLoader::loadUserMonitoringService(){
     throw cond::Exception( "could not locate the UserMonitoringService" );
   }
 }
+*/

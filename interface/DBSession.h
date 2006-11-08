@@ -1,38 +1,32 @@
-#ifndef COND_DBSESSION_H
-#define COND_DBSESSION_H
-#include "CondCore/DBCommon/interface/ConnectMode.h"
+#ifndef COND_DBCommon_DBSession_h
+#define COND_DBCommon_DBSession_h
 #include <string>
-#include <vector>
-namespace pool{
-  class IDataSvc;
-  class IFileCatalog;
-  class IDatabase;
-}
 namespace cond{
+  class PoolStorageManager;
+  class RelationalStorageManager;
+  class ServiceLoader;
+  class ConnectionConfiguration;
+  class SessionConfiguration;
   class DBSession{
   public:
     explicit DBSession( const std::string& con );
-    DBSession( const std::string& con, 
-	       const std::string& catalogcon
-	       );
     ~DBSession();
-    void setCatalog( const std::string& catalogcon );
-    void connect(  cond::ConnectMode mode=cond::ReadWriteCreate );
-    void disconnect();
-    void startUpdateTransaction();
-    void startReadOnlyTransaction();
-    void commit();
-    void rollback();
+    void open( bool usePoolContext=true );
+    void close();
+    PoolStorageManager& poolStorageManager( const std::string& catalog );
+    RelationalStorageManager& relationalStorageManager();
+    ServiceLoader& serviceLoader();
+    ConnectionConfiguration& connectionConfiguration();
+    SessionConfiguration& sessionConfiguration();
     const std::string connectionString() const;
-    std::vector< std::string > containers();
-    pool::IDataSvc& DataSvc() const;
-    pool::IFileCatalog& Catalog() const;
   private:
+    bool m_isActive;
     std::string m_con;
-    pool::IFileCatalog* m_cat;
-    pool::IDataSvc* m_svc;
-    std::string m_catalogcon;
-    pool::IDatabase* m_db;
+    PoolStorageManager* m_pool;
+    RelationalStorageManager* m_coral;
+    ServiceLoader* m_loader;
+    ConnectionConfiguration* m_connectConfig;
+    SessionConfiguration* m_sessionConfig;
   };
 }//ns cond
 #endif
