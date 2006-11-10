@@ -28,7 +28,6 @@ seal::Context* cond::ServiceLoader::context(){
   return m_context;
 }
 void cond::ServiceLoader::initLoader(){
-  std::cout<<"initLoader"<<std::endl;
   seal::PluginManager* pm = seal::PluginManager::get();
   if ( ! pm ) {
     throw cond::Exception( "Could not get the plugin manager instance" );
@@ -40,13 +39,9 @@ void cond::ServiceLoader::initLoader(){
   m_loader = new seal::ComponentLoader( m_context );
 }
 void cond::ServiceLoader::loadMessageService( cond::MessageLevel messagelevel ){
-  std::cout<<"cond::ServiceLoader::loadMessageService"<<std::endl;
   if(!m_loader.get()) {
-    std::cout<<"about to init"<<std::endl;
     this->initLoader();
-    std::cout<<"after init"<<std::endl;
   }
-  std::cout<<"about to load messageservice"<<std::endl;
   m_loader->load("SEAL/Services/MessageService");
   std::vector< seal::IHandle<seal::IMessageService> > v_msgSvc;
   m_context->query( v_msgSvc );
