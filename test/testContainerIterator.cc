@@ -2,7 +2,6 @@
 #include "CondCore/DBCommon/interface/DBSession.h"
 #include "CondCore/DBCommon/interface/PoolStorageManager.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "CondCore/DBCommon/interface/ContainerIterator.h"
@@ -10,8 +9,6 @@
 #include <string>
 #include <iostream>
 int main(){
-  cond::ServiceLoader* loader=new cond::ServiceLoader;
-  loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test2.db"));
   try{
     cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
@@ -52,5 +49,4 @@ int main(){
     std::cout<<"Funny error"<<std::endl;
   }
   delete session;
-  delete loader;
 }
