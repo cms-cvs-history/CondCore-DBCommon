@@ -10,7 +10,9 @@ namespace pool{
 }
 namespace cond{
   class DBSession;
-  //class ContainerIterator;
+  /*
+   * Class manages POOL session and transaction. Holds DataSvc 
+   **/
   class PoolStorageManager{
   public:
     PoolStorageManager(const std::string& con,const std::string& catalog);
@@ -20,10 +22,11 @@ namespace cond{
     void startTransaction(bool isReadOnly=true);
     void commit();
     void rollback();
-    std::string catalogStr() const;
+    std::string catalogString() const;
+    std::string connectionString() const;
     std::vector<std::string> containers();
     pool::IDataSvc& DataSvc();
-  //ContainerIterator* newContainerIterator(const std::string& containername);
+   //ContainerIterator* newContainerIterator(const std::string& containername);
   private:
     std::string m_catalogstr;
     std::string m_con;

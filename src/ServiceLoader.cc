@@ -13,11 +13,9 @@
 #include "RelationalAccess/IMonitoringService.h"
 #include "RelationalAccess/IConnectionServiceConfiguration.h"
 #include "RelationalStorageService/IBlobStreamingService.h"
-//#include "CondCore/BlobStreamingService/interface/BlobStreamingService.h"
 cond::ServiceLoader::ServiceLoader():m_isPoolContext(true),m_context(0) {
 }
 cond::ServiceLoader::~ServiceLoader(){
-  //if(m_context) delete m_context;
 }
 void cond::ServiceLoader::usePOOLContext(){
   m_context=cond::CONDContext::getPOOLContext();

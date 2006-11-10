@@ -59,3 +59,8 @@ cond::SessionConfiguration& cond::DBSession::sessionConfiguration(){
 const std::string cond::DBSession::connectionString() const{
   return m_con;
 }
+bool cond::DBSession::hasOpenConnections() const{
+  return false;
+}
+void cond::DBSession::purgeConnections(){ 
+}

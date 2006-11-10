@@ -1,5 +1,5 @@
-#ifndef TOKENBUILDER_H
-#define TOKENBUILDER_H
+#ifndef DBCommon_TokenBuilder_h
+#define DBCommon_TokenBuilder_h
 #include <string>
 namespace pool{
   class Token;

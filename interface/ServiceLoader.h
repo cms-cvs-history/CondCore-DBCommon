@@ -6,24 +6,13 @@
 #include <string>
 //#include <map>
 namespace seal{
-  //class IMessageService;
   class ComponentLoader;
-  //class Handle;
-  //class Component;
 }
-//  namespace coral{
-//  class IRelationalService;
-//  }
-/*class IAuthenticationService;
-  }
-  namespace pool{
-  class IBlobStreamingService;
-  }
-*/
-namespace cond{
+namespace  cond{
   class ConnectionConfiguration;
   //
-  //wrapper around loading LCG services
+  //loads LCG services, holds the global context for services
+  //
   //
   class ServiceLoader{
   public:

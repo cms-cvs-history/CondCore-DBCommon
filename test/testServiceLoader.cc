@@ -28,7 +28,7 @@ int main(){
     std::cout<<"funny error"<<std::endl;
   }
   try{
-    loader->loadBlobStreamingService();
+    loader->loadBlobStreamingService("");
     std::cout<<"streaming service loaded"<<std::endl;
   }catch(cond::Exception& er){
     std::cout<<"caught cond exception "<<er.what()<<std::endl;

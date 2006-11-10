@@ -8,6 +8,6 @@ cond::CONDContext::getPOOLContext(){
 }
 seal::Context*
 cond::CONDContext::getOwnContext(){
-  static seal::Handle< seal::Context > s_context = new seal::Context();
+  static seal::Handle< seal::Context > s_context = new seal::Context;
   return s_context.get();
 }

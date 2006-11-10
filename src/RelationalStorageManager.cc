@@ -24,10 +24,11 @@ void cond::RelationalStorageManager::connect(cond::ConnectMode mod){
   std::vector< seal::IHandle< coral::IConnectionService > > loadedServices;
   m_context->query( loadedServices );
   if ( loadedServices.empty() ) {
-    m_context->query( loadedServices );
+    //m_context->query( loadedServices );
+    throw cond::Exception( std::string("RelationalStorageManager::connect: ConnectionService is not loaded") );
   }
   seal::IHandle< coral::IConnectionService > connectionService = loadedServices.front();
-  try {
+  try{
     m_proxy = connectionService->connect(m_con, ( mod == cond::ReadOnly ) ? coral::ReadOnly : coral::Update );
   }catch (const coral::Exception& e) {
     if(m_proxy) delete m_proxy;

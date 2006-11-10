@@ -7,6 +7,8 @@ namespace cond{
   class ServiceLoader;
   class ConnectionConfiguration;
   class SessionConfiguration;
+  /*
+  **/
   class DBSession{
   public:
     explicit DBSession( const std::string& con );
@@ -19,6 +21,8 @@ namespace cond{
     ConnectionConfiguration& connectionConfiguration();
     SessionConfiguration& sessionConfiguration();
     const std::string connectionString() const;
+    bool hasOpenConnections() const;
+    void purgeConnections();
   private:
     bool m_isActive;
     std::string m_con;

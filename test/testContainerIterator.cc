@@ -1,5 +1,6 @@
 #include "CondCore/DBCommon/interface/Ref.h"
 #include "CondCore/DBCommon/interface/DBSession.h"
+#include "CondCore/DBCommon/interface/PoolStorageManager.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
@@ -13,33 +14,36 @@ int main(){
   loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test2.db"));
   try{
-    session->connect(cond::ReadWriteCreate);
-    session->startUpdateTransaction();
+    cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
+    session->open(true);
+    pooldb.connect(cond::ReadWriteCreate);
+    pooldb.startTransaction(false);
     for(int i=0; i<10; ++i){
       testCondObj* myobj=new testCondObj;
       myobj->data.insert(std::make_pair(1+i,"strangestring1"));
       myobj->data.insert(std::make_pair(100+i,"strangestring2"));
-      cond::Ref<testCondObj> myref(*session,myobj);
+      cond::Ref<testCondObj> myref(pooldb,myobj);
       myref.markWrite("mycontainer");
       std::string token=myref.token();
       std::cout<<"token "<<i<<" "<<token<<std::endl;
     }
-    session->commit();
-    session->startReadOnlyTransaction();
-    std::vector<std::string> containers=session->containers();
+    pooldb.commit();
+    pooldb.startTransaction(true);
+    std::vector<std::string> containers=pooldb.containers();
     for(std::vector<std::string>::iterator it=containers.begin();
 	it!=containers.end(); ++it){
       std::cout<<*it<<std::endl;
     }
-    session->commit();
-    session->startUpdateTransaction();
-    cond::ContainerIterator<testCondObj> col(*session, "mycontainer");
+    pooldb.commit();
+    pooldb.startTransaction(false);
+    cond::ContainerIterator<testCondObj> col(pooldb, "mycontainer");
     std::cout<<"collection name "<<col.name()<<std::endl;
     while(col.next()){
       col.dataRef().markDelete();
     }
-    session->commit();
-    session->disconnect();
+    pooldb.commit();
+    pooldb.disconnect();
+    session->close();    
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(std::exception& er){
@@ -49,5 +53,4 @@ int main(){
   }
   delete session;
   delete loader;
-
 }

@@ -15,47 +15,50 @@ int main(){
   //loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
   try{
-    session->connect(cond::ReadWriteCreate);
+    cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
+    session->open(true);
+    pooldb.connect(cond::ReadWriteCreate);
     testCondObj* myobj=new testCondObj;
     myobj->data.insert(std::make_pair(1,"strangestring1"));
     myobj->data.insert(std::make_pair(100,"strangestring2"));
-    cond::Ref<testCondObj> myref(*session,myobj);
-    session->startUpdateTransaction();
+    cond::Ref<testCondObj> myref(pooldb,myobj);
+    pooldb.startTransaction(false);
     myref.markWrite("mycontainer");
     std::string token=myref.token();
     std::cout<<"token "<<token<<std::endl;
-    session->commit();
-    session->startReadOnlyTransaction();
-    cond::Ref<testCondObj> myinstance(*session,token);
+    pooldb.commit();
+    pooldb.startTransaction(true);
+    cond::Ref<testCondObj> myinstance(pooldb,token);
     std::cout<<"mem pointer "<<myinstance.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
     std::cout<<"read back 100 "<<myinstance->data[100]<<std::endl;
-    session->commit();
+    pooldb.commit();
     myinstance->data[1]="updatedstring";
     myinstance->data.insert(std::make_pair(1000,"newstring"));
-    session->startUpdateTransaction();
+    pooldb.startTransaction(false);
     myinstance.markUpdate();
     token=myref.token();
     std::cout<<"same token "<<token<<std::endl;
-    session->commit();
-    session->startReadOnlyTransaction();
-    cond::Ref<testCondObj> myrefback(*session,token);
-    session->commit();
+    pooldb.commit();
+    pooldb.startTransaction(true);
+    cond::Ref<testCondObj> myrefback(pooldb,token);
+    pooldb.commit();
     std::cout<<"ref belongs to container "<<myrefback.containerName()<<std::endl;
     std::cout<<"pointer "<<myrefback.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myrefback->data[1]<<std::endl;
     std::cout<<"read back 100 "<<myrefback->data[100]<<std::endl;
     std::cout<<"read back 1000 "<<myrefback->data[1000]<<std::endl;
-    session->startUpdateTransaction();
+    pooldb.startTransaction(false);
     myrefback.markDelete();
-    session->commit();
-    session->startReadOnlyTransaction();
-    cond::Ref<testCondObj> result(*session,token);
-    session->commit();
+    pooldb.commit();
+    pooldb.startTransaction(true);
+    cond::Ref<testCondObj> result(pooldb,token);
+    pooldb.commit();
     if( !result.ptr() ){
       std::cout<<"object deleted, null pointer retrieved"<<std::endl;
     }
-    session->disconnect();
+    pooldb.disconnect();
+    session->close();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(std::exception& er){

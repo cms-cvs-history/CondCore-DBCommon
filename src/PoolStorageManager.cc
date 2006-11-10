@@ -67,8 +67,11 @@ void cond::PoolStorageManager::commit(){
 void cond::PoolStorageManager::rollback(){
   m_svc->transaction().rollback();
 }
-std::string cond::PoolStorageManager::catalogStr() const{
+std::string cond::PoolStorageManager::catalogString() const{
   return m_catalogstr;
+}
+std::string cond::PoolStorageManager::connectionString() const{
+  return m_con;
 }
 std::vector<std::string> cond::PoolStorageManager::containers(){
   if(!m_db){
