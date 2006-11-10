@@ -1,7 +1,7 @@
 #include "CondCore/DBCommon/interface/Ref.h"
 #include "CondCore/DBCommon/interface/DBSession.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
+#include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "testCondObj.h"
@@ -9,21 +9,28 @@
 #include <string>
 #include <iostream>
 int main(){
-  cond::ServiceLoader* loader=new cond::ServiceLoader;
-  loader->usePOOLContext();
-  loader->loadMessageService(cond::Info);
-  //loader->loadMessageService(cond::Error);
   cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
+  session->sessionConfiguration().setMessageLevel(cond::Debug);
+  std::cout<<5<<std::endl;
   try{
+    std::cout<<6<<std::endl;
     cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
+    std::cout<<7<<std::endl;
     session->open(true);
+    std::cout<<8<<std::endl;
     pooldb.connect(cond::ReadWriteCreate);
+    std::cout<<9<<std::endl;
     testCondObj* myobj=new testCondObj;
+    std::cout<<10<<std::endl;
     myobj->data.insert(std::make_pair(1,"strangestring1"));
     myobj->data.insert(std::make_pair(100,"strangestring2"));
+    std::cout<<11<<std::endl;
     cond::Ref<testCondObj> myref(pooldb,myobj);
+    std::cout<<12<<std::endl;
     pooldb.startTransaction(false);
+    std::cout<<13<<std::endl;
     myref.markWrite("mycontainer");
+    std::cout<<14<<std::endl;
     std::string token=myref.token();
     std::cout<<"token "<<token<<std::endl;
     pooldb.commit();
@@ -67,5 +74,4 @@ int main(){
     std::cout<<"Funny error"<<std::endl;
   }
   delete session;
-  delete loader;
 }

@@ -1,4 +1,4 @@
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
+#include "CondCore/DBCommon/src/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "POOLCore/Exception.h"
 #include <string>

@@ -3,10 +3,8 @@
 <use name=DataSvc>
 <use name=Collection>
 <use name=ObjectRelationalAccess>
-<use name=rootrflx>
 <use name=FWCore/Utilities>
 <export>
-  <use name=rootrflx>
   <use name=FWCore/Utilities>
   <lib name=CondCoreDBCommon>
 </export>

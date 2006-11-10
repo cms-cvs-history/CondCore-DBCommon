@@ -1,5 +1,5 @@
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
-#include "CondCore/DBCommon/interface/CONDContext.h"
+#include "ServiceLoader.h"
+#include "CONDContext.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
 #include "PluginManager/PluginManager.h"
@@ -28,6 +28,7 @@ seal::Context* cond::ServiceLoader::context(){
   return m_context;
 }
 void cond::ServiceLoader::initLoader(){
+  std::cout<<"initLoader"<<std::endl;
   seal::PluginManager* pm = seal::PluginManager::get();
   if ( ! pm ) {
     throw cond::Exception( "Could not get the plugin manager instance" );
@@ -40,7 +41,7 @@ void cond::ServiceLoader::initLoader(){
 }
 void cond::ServiceLoader::loadMessageService( cond::MessageLevel messagelevel ){
   std::cout<<"cond::ServiceLoader::loadMessageService"<<std::endl;
-  if(!m_loader) {
+  if(!m_loader.get()) {
     std::cout<<"about to init"<<std::endl;
     this->initLoader();
     std::cout<<"after init"<<std::endl;
@@ -71,7 +72,7 @@ void cond::ServiceLoader::loadMessageService( cond::MessageLevel messagelevel ){
   return;
 }
 void cond::ServiceLoader::loadAuthenticationService(cond::AuthenticationMethod method){
-  if(!m_loader) {
+  if(!m_loader.get()) {
     this->initLoader();
   }
   std::vector< seal::IHandle<coral::IAuthenticationService> > v_svc;
@@ -99,7 +100,7 @@ void cond::ServiceLoader::loadAuthenticationService(cond::AuthenticationMethod m
   }
 }
 void cond::ServiceLoader::loadRelationalService(){
-  if(!m_loader) {
+  if(!m_loader.get()) {
     this->initLoader();
   }
   m_loader->load( "CORAL/Services/RelationalService" );
@@ -111,7 +112,7 @@ void cond::ServiceLoader::loadRelationalService(){
   return;
 }
 void cond::ServiceLoader::loadConnectionService(cond::ConnectionConfiguration& config){
-  if(!m_loader) {
+  if(!m_loader.get()) {
     this->initLoader();
   }
   m_loader->load( "CORAL/Services/ConnectionService" );
@@ -131,7 +132,7 @@ void cond::ServiceLoader::loadConnectionService(cond::ConnectionConfiguration& c
   return;
 }
 void cond::ServiceLoader::loadBlobStreamingService( const std::string& componentName){
-  if(!m_loader) {
+  if(!m_loader.get()) {
     this->initLoader();
   }
   if(componentName.empty()){

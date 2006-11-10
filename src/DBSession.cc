@@ -1,9 +1,9 @@
 #include "CondCore/DBCommon/interface/DBSession.h"
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
 #include "CondCore/DBCommon/interface/PoolStorageManager.h"
 #include "CondCore/DBCommon/interface/RelationalStorageManager.h"
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
+#include "ServiceLoader.h"
 cond::DBSession::DBSession( const std::string& con ):m_isActive(false),m_con(con),m_pool(0),m_coral(0),m_loader(new cond::ServiceLoader),m_connectConfig(new cond::ConnectionConfiguration),m_sessionConfig(new cond::SessionConfiguration){ 
 }
 cond::DBSession::~DBSession(){

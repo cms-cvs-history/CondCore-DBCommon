@@ -1,7 +1,6 @@
-#include "CondCore/DBCommon/interface/CONDContext.h"
+#include "CONDContext.h"
 #include "POOLCore/POOLContext.h"
 #include "SealKernel/Context.h"
-#include <vector>
 seal::Context*
 cond::CONDContext::getPOOLContext(){
   return pool::POOLContext::context();
