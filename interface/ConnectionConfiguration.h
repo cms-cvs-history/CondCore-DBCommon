@@ -13,11 +13,15 @@ namespace cond{
     int connectionRetrialTimeOut() const;
     void setConnectionTimeOut( int timeOutInSeconds );
     int connectionTimeOut();
+    void enableReadOnlySessionOnUpdateConnections();
+    void disableReadOnlySessionOnUpdateConnections();
+    bool isReadOnlySessionOnUpdateConnectionsEnabled();
   private:
     bool m_enableConSharing;
     int m_connectionRetrialPeriod;
     int m_connectionRetrialTimeOut;
     int m_connectionTimeOut;
+    bool m_enableCommonConnection;
   };
 }
 #endif

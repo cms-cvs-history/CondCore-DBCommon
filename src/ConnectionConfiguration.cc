@@ -1,5 +1,5 @@
 #include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
-cond::ConnectionConfiguration::ConnectionConfiguration():m_enableConSharing(false),m_connectionRetrialPeriod(0),m_connectionRetrialTimeOut(0),m_connectionTimeOut(0){}
+cond::ConnectionConfiguration::ConnectionConfiguration():m_enableConSharing(false),m_connectionRetrialPeriod(0),m_connectionRetrialTimeOut(0),m_connectionTimeOut(0),m_enableCommonConnection(false){}
 cond::ConnectionConfiguration::~ConnectionConfiguration(){}
 void cond::ConnectionConfiguration::enableConnectionSharing(){
   m_enableConSharing=true;
@@ -24,4 +24,13 @@ void cond::ConnectionConfiguration::setConnectionTimeOut( int timeOutInSeconds )
 }
 int cond::ConnectionConfiguration::connectionTimeOut(){
   return m_connectionTimeOut;
+}
+void cond::ConnectionConfiguration::enableReadOnlySessionOnUpdateConnections(){
+  m_enableCommonConnection=true;
+}
+void cond::ConnectionConfiguration::disableReadOnlySessionOnUpdateConnections(){
+  m_enableCommonConnection=false;
+}
+bool cond::ConnectionConfiguration::isReadOnlySessionOnUpdateConnectionsEnabled(){
+  return m_enableCommonConnection;
 }

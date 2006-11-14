@@ -9,9 +9,9 @@
 #include "RelationalAccess/ITransaction.h"
 #include "CoralBase/Exception.h"
 #include <vector>
-cond::RelationalStorageManager::RelationalStorageManager(const std::string& con, seal::Context* context):m_con(con),m_context(context){}
+cond::RelationalStorageManager::RelationalStorageManager(const std::string& con, seal::Context* context):m_con(con),m_context(context),m_proxy(0){}
 cond::RelationalStorageManager::~RelationalStorageManager(){}
-void cond::RelationalStorageManager::connect(cond::ConnectMode mod){
+coral::ISessionProxy* cond::RelationalStorageManager::connect(cond::ConnectMode mod){
   if(mod==cond::ReadOnly){
     m_readOnlyMode=true;
   }
@@ -35,6 +35,7 @@ void cond::RelationalStorageManager::connect(cond::ConnectMode mod){
     m_proxy = 0;
     throw cond::Exception( std::string("RelationalStorageManager::connect: couldn't connect to the database ")+e.what() );
   }
+  return m_proxy;
 }
 void cond::RelationalStorageManager::disconnect(){
   try{
@@ -91,4 +92,9 @@ void cond::RelationalStorageManager::rollback(){
     if ( ! sharedConnection ) transaction.rollback();
   }
 }
-
+std::string cond::RelationalStorageManager::connectionString() const{
+  return m_con;
+}
+coral::ISessionProxy& cond::RelationalStorageManager::sessionProxy(){
+  return *m_proxy;
+}

@@ -25,12 +25,12 @@ void cond::PoolStorageManager::connect(cond::ConnectMode mod){
   case cond::ReadWriteCreate:
     policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::CREATE);
     policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
-    policy.setReadMode(pool::DatabaseConnectionPolicy::UPDATE);
+    policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
     break;
   case cond::ReadWrite:
     policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::RAISE_ERROR);
     policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
-    policy.setReadMode(pool::DatabaseConnectionPolicy::UPDATE);
+    policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
     break;
   case cond::ReadOnly:
     policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::RAISE_ERROR);

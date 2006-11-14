@@ -16,12 +16,13 @@ namespace cond{
   public:
     RelationalStorageManager(const std::string& con, seal::Context* context);
     ~RelationalStorageManager();
-    void connect(cond::ConnectMode mod);
+    coral::ISessionProxy* connect(cond::ConnectMode mod);
     void disconnect();
     void startTransaction(bool isReadOnly=true);
     void commit();
     void rollback();
-    //coral::ISessionProxy& sessionProxy();
+    std::string connectionString() const;
+    coral::ISessionProxy& sessionProxy();
   private:
     std::string m_con;
     seal::Context* m_context;
