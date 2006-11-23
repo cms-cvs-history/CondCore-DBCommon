@@ -2,7 +2,7 @@
 cond::SessionConfiguration::SessionConfiguration():m_authMethod(cond::Env),m_hasBlobstreamer(false),m_blobstreamerName(""),m_messageLevel(cond::Error),m_hasStandaloneRelationalService(false){}
 cond::SessionConfiguration::~SessionConfiguration(){}
 void cond::SessionConfiguration::setAuthenticationMethod( cond::AuthenticationMethod m ){
-  m_authMethod=cond::Env;
+  m_authMethod=m;
 }
 void cond::SessionConfiguration::setBlobStreamer( const std::string& name ){
   m_blobstreamerName=name;
