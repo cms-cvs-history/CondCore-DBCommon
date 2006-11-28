@@ -88,9 +88,9 @@ namespace cond{
       return this->ptr();
     }
     T& operator * () const{
-      T& result;
       try{
-	result=*m_data;
+	//T& result=*m_data;
+	return *m_data;
       }catch(const pool::Exception& er){
 	throw cond::RefException( "operator * ",er.what() );
       }
