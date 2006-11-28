@@ -1,4 +1,5 @@
 #include "CondCore/DBCommon/interface/DBSession.h"
+#include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/PoolStorageManager.h"
 #include "CondCore/DBCommon/interface/RelationalStorageManager.h"
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
@@ -61,6 +62,9 @@ const std::string cond::DBSession::connectionString() const{
 }
 bool cond::DBSession::hasOpenConnections() const{
   return false;
+}
+bool cond::DBSession::isActive() const{
+  return m_isActive;
 }
 void cond::DBSession::purgeConnections(){ 
 }

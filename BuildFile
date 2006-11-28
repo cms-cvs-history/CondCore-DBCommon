@@ -4,7 +4,9 @@
 <use name=Collection>
 <use name=ObjectRelationalAccess>
 <use name=FWCore/Utilities>
+<use name=FWCore/Framework>
 <export>
   <use name=FWCore/Utilities>
+  <use name=FWCore/Framework>
   <lib name=CondCoreDBCommon>
 </export>

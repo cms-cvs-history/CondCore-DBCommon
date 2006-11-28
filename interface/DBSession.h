@@ -22,6 +22,7 @@ namespace cond{
     SessionConfiguration& sessionConfiguration();
     const std::string connectionString() const;
     bool hasOpenConnections() const;
+    bool isActive() const;
     void purgeConnections();
   private:
     bool m_isActive;

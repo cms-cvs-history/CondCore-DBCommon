@@ -7,6 +7,6 @@
   public:
     testCondObj(){}
     virtual ~testCondObj(){}
-    std::map<unsigned long long,std::string> data;
+    std::map<unsigned int,std::string> data;
   };
 #endif
