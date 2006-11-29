@@ -33,7 +33,7 @@ namespace  cond{
     void initLoader();
   private:
     bool m_isPoolContext;
-    seal::Context* m_context;
+    seal::Handle< seal::Context > m_context;
     seal::Handle<seal::ComponentLoader> m_loader;
   };
 }//ns cond

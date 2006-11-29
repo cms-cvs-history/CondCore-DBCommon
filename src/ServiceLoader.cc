@@ -25,7 +25,7 @@ void cond::ServiceLoader::useOwnContext(){
   m_context=cond::CONDContext::getOwnContext();
 }
 seal::Context* cond::ServiceLoader::context(){
-  return m_context;
+  return m_context.get();
 }
 void cond::ServiceLoader::initLoader(){
   seal::PluginManager* pm = seal::PluginManager::get();
@@ -36,7 +36,7 @@ void cond::ServiceLoader::initLoader(){
   if(!m_context){
     m_context=cond::CONDContext::getPOOLContext(); //default
   }
-  m_loader = new seal::ComponentLoader( m_context );
+  m_loader = new seal::ComponentLoader( m_context.get() );
 }
 void cond::ServiceLoader::loadMessageService( cond::MessageLevel messagelevel ){
   if(!m_loader.get()) {

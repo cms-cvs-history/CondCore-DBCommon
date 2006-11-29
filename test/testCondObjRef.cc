@@ -9,8 +9,8 @@
 #include <string>
 #include <iostream>
 int main(){
-  //cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
-  cond::DBSession* session=new cond::DBSession(std::string("oracle://devdb10/cms_xiezhen_dev"));
+  cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
+  // cond::DBSession* session=new cond::DBSession(std::string("oracle://devdb10/cms_xiezhen_dev"));
   session->sessionConfiguration().setMessageLevel(cond::Debug);
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{
