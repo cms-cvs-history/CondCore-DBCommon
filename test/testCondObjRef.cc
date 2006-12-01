@@ -16,7 +16,7 @@ int main(){
   try{
     cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
     session->open(true);
-    pooldb.connect(cond::ReadWriteCreate);
+    pooldb.connect();
     testCondObj* myobj=new testCondObj;
     myobj->data.insert(std::make_pair(1,"strangestring1"));
     myobj->data.insert(std::make_pair(100,"strangestring2"));

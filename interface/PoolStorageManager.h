@@ -17,7 +17,7 @@ namespace cond{
   public:
     PoolStorageManager(const std::string& con,const std::string& catalog);
     ~PoolStorageManager();
-    void connect(cond::ConnectMode mod);
+    void connect();
     void disconnect();
     void startTransaction(bool isReadOnly=true);
     void commit();
@@ -33,6 +33,9 @@ namespace cond{
     pool::IFileCatalog* m_cat;
     pool::IDataSvc* m_svc;
     pool::IDatabase* m_db;
+    bool m_started;
+  private:
+    void init();
   };
 }//ns cond
 #endif

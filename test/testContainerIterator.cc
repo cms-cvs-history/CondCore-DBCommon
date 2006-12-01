@@ -13,7 +13,7 @@ int main(){
   try{
     cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
     session->open(true);
-    pooldb.connect(cond::ReadWriteCreate);
+    pooldb.connect();
     pooldb.startTransaction(false);
     for(int i=0; i<10; ++i){
       testCondObj* myobj=new testCondObj;

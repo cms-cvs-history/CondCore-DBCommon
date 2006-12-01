@@ -12,49 +12,32 @@
 #include "DataSvc/IDataSvc.h"
 #include "POOLCore/Exception.h"
 cond::PoolStorageManager::PoolStorageManager(const std::string& con,
-					     const std::string& catalog): m_catalogstr(catalog),m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)),m_db(0){  
+					     const std::string& catalog): m_catalogstr(catalog),m_con(con),m_cat(new pool::IFileCatalog),m_svc( pool::DataSvcFactory::instance(m_cat)),m_db(0),m_started(false){  
 }
 cond::PoolStorageManager::~PoolStorageManager(){
   delete m_cat;
   delete m_svc;
   if(m_db) delete m_db;
 }
-void cond::PoolStorageManager::connect(cond::ConnectMode mod){
+void cond::PoolStorageManager::init(){
   pool::DatabaseConnectionPolicy policy;
-  switch(mod){
-  case cond::ReadWriteCreate:
-    policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::CREATE);
-    policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
-    policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
-    break;
-  case cond::ReadWrite:
-    policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::RAISE_ERROR);
-    policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
-    policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
-    break;
-  case cond::ReadOnly:
-    policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::RAISE_ERROR);
-    policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::RAISE_ERROR);
-    policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
-    break;
-  default:
-    throw cond::Exception(std::string("PoolStorageManager::connect unknown connect mode"));
-  }
-  if(mod==cond::ReadOnly){
-    m_cat->addReadCatalog(m_catalogstr);
-  }else{
-    m_cat->setWriteCatalog(m_catalogstr);
-  }
-  m_cat->connect();
-  m_cat->start();
+  policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::CREATE);
+  policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
+  policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
+  m_cat->setWriteCatalog(m_catalogstr);
   m_svc->session().setDefaultConnectionPolicy(policy);
+  m_started=true;
+}
+void cond::PoolStorageManager::connect(){
+  if(!m_started) init();
+  m_cat->connect();
 }
 void cond::PoolStorageManager::disconnect(){
   m_svc->session().disconnectAll();
-  m_cat->commit();
   m_cat->disconnect();
 }
 void cond::PoolStorageManager::startTransaction(bool isReadOnly){
+  m_cat->start();
   if(!isReadOnly){
     m_svc->transaction().start( pool::ITransaction::UPDATE );
   }else{
@@ -63,9 +46,11 @@ void cond::PoolStorageManager::startTransaction(bool isReadOnly){
 }
 void cond::PoolStorageManager::commit(){
   m_svc->transaction().commit();
+  m_cat->commit();
 }
 void cond::PoolStorageManager::rollback(){
   m_svc->transaction().rollback();
+  m_cat->rollback();
 }
 std::string cond::PoolStorageManager::catalogString() const{
   return m_catalogstr;
