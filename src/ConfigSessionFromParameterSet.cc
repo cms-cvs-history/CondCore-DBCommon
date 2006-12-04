@@ -3,10 +3,12 @@
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "boost/filesystem/operations.hpp"
 cond::ConfigSessionFromParameterSet::ConfigSessionFromParameterSet(
 			cond::DBSession& session,
 			const edm::ParameterSet& connectionPset ){
-  std::string authMethod=connectionPset.getUntrackedParameter<std::string>("authenticationMethod","XML");
+  std::string authDir=connectionPset.getUntrackedParameter<std::string>("authenticationPath","");
+  boost::filesystem::path fs(authDir);
   int messageLevel=connectionPset.getUntrackedParameter<int>("messageLevel",0);
   bool enableConnectionSharing=connectionPset.getUntrackedParameter<bool>("enableConnectionSharing",true);
   int connectionTimeOut=connectionPset.getUntrackedParameter<int>("connectionTimeOut",600);
@@ -14,9 +16,12 @@ cond::ConfigSessionFromParameterSet::ConfigSessionFromParameterSet(
   bool loadBlobStreamer=connectionPset.getUntrackedParameter<bool>("loadBlobStreamer",false);
   int connectionRetrialPeriod=connectionPset.getUntrackedParameter<int>("connectionRetrialPeriod",30);
   int connectionRetrialTimeOut=connectionPset.getUntrackedParameter<int>("connectionRetrialTimeOut",180);
-  if(authMethod=="ENV"||authMethod=="Env"){
+  if( fs.string().empty() ){
     session.sessionConfiguration().setAuthenticationMethod(cond::Env);
   }else{
+    std::string authpath("CORAL_AUTH_PATH=");
+    authpath+=fs.string();
+    ::putenv(const_cast<char*>(authpath.c_str()));
     session.sessionConfiguration().setAuthenticationMethod(cond::XML);
   }  
   switch (messageLevel) {
