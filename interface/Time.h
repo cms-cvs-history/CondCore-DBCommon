@@ -3,5 +3,6 @@
 namespace cond{  
   //typedef unsigned int Time_t;
   typedef unsigned long long Time_t;
+  typedef enum { runnumber,timestamp } TimeType;
 }
 #endif
