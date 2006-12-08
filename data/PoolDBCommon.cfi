@@ -1,8 +1,0 @@
-block PoolDBCommon   = {
-                        string connect = "protocol://db/schema"
-                        untracked string catalog = "protocol://db/catalog"
-                        string timetype = "runnumber"
-                        untracked bool loadBlobStreamer = false
-                        untracked uint32 authenticationMethod = 1
-                        untracked uint32 messagelevel = 0
-                        }
