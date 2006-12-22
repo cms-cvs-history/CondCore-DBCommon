@@ -2,8 +2,6 @@
 #define COND_DBCommon_DBSession_h
 #include <string>
 namespace cond{
-  class PoolStorageManager;
-  class RelationalStorageManager;
   class ServiceLoader;
   class ConnectionConfiguration;
   class SessionConfiguration;
@@ -11,27 +9,22 @@ namespace cond{
   **/
   class DBSession{
   public:
-    explicit DBSession( const std::string& con );
+    DBSession();
+    explicit DBSession( bool usePoolContext );
     ~DBSession();
-    void open( bool usePoolContext=true );
+    void open();
     void close();
-    PoolStorageManager& poolStorageManager( const std::string& catalog );
-    RelationalStorageManager& relationalStorageManager();
     ServiceLoader& serviceLoader();
     ConnectionConfiguration& connectionConfiguration();
     SessionConfiguration& sessionConfiguration();
-    const std::string connectionString() const;
-    bool hasOpenConnections() const;
     bool isActive() const;
-    void purgeConnections();
+    void purgeConnectionPool();
   private:
     bool m_isActive;
-    std::string m_con;
-    PoolStorageManager* m_pool;
-    RelationalStorageManager* m_coral;
     ServiceLoader* m_loader;
     ConnectionConfiguration* m_connectConfig;
     SessionConfiguration* m_sessionConfig;
+    bool m_usePoolContext;
   };
 }//ns cond
 #endif

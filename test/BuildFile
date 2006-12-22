@@ -5,6 +5,9 @@
 <bin file=testCondObjRef.cc name=testCondObjRef>
 <lib name=testDict>
 </bin>
+<bin file=testCondObjCopy.cc name=testCondObjCopy>
+<lib name=testDict>
+</bin>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
 <lib name=testDict>
 </bin>

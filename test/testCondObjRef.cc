@@ -9,19 +9,18 @@
 #include <string>
 #include <iostream>
 int main(){
-  cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test.db"));
-  // cond::DBSession* session=new cond::DBSession(std::string("oracle://devdb10/cms_xiezhen_dev"));
-  session->sessionConfiguration().setMessageLevel(cond::Debug);
+  cond::DBSession* session=new cond::DBSession(true);
+  session->sessionConfiguration().setMessageLevel(cond::Error);
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{
-    cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
-    session->open(true);
+    session->open();
+    cond::PoolStorageManager pooldb("sqlite_file:test.db","file:mycatalog.xml",session);
     pooldb.connect();
     testCondObj* myobj=new testCondObj;
     myobj->data.insert(std::make_pair(1,"strangestring1"));
     myobj->data.insert(std::make_pair(100,"strangestring2"));
-    cond::Ref<testCondObj> myref(pooldb,myobj);
     pooldb.startTransaction(false);
+    cond::Ref<testCondObj> myref(pooldb,myobj);
     myref.markWrite("mycontainer");
     std::string token=myref.token();
     std::cout<<"token "<<token<<std::endl;

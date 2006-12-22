@@ -15,8 +15,14 @@ namespace cond{
    **/
   class PoolStorageManager{
   public:
-    PoolStorageManager(const std::string& con,const std::string& catalog);
+    PoolStorageManager(const std::string& con,
+		       const std::string& catalog);
+    PoolStorageManager(const std::string& con,
+		       const std::string& catalog, 
+		       DBSession* session);
     ~PoolStorageManager();
+    DBSession& session();
+    bool isSessionShared() const;
     void connect();
     void disconnect();
     void startTransaction(bool isReadOnly=true);
@@ -34,6 +40,8 @@ namespace cond{
     pool::IDataSvc* m_svc;
     pool::IDatabase* m_db;
     bool m_started;
+    DBSession* m_sessionHandle;
+    bool m_sessionShared;
   private:
     void init();
   };

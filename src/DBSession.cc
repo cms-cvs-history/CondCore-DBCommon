@@ -4,18 +4,19 @@
 #include "CondCore/DBCommon/interface/RelationalStorageManager.h"
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/ConnectionConfiguration.h"
+#include "CondCore/DBCommon/interface/Exception.h"
 #include "ServiceLoader.h"
-cond::DBSession::DBSession( const std::string& con ):m_isActive(false),m_con(con),m_pool(0),m_coral(0),m_loader(new cond::ServiceLoader),m_connectConfig(new cond::ConnectionConfiguration),m_sessionConfig(new cond::SessionConfiguration){ 
+cond::DBSession::DBSession():m_isActive(false),m_loader(new cond::ServiceLoader),m_connectConfig(new cond::ConnectionConfiguration),m_sessionConfig(new cond::SessionConfiguration),m_usePoolContext(true){ 
+}
+cond::DBSession::DBSession(bool usePoolContext):m_isActive(false),m_loader(new cond::ServiceLoader),m_connectConfig(new cond::ConnectionConfiguration),m_sessionConfig(new cond::SessionConfiguration),m_usePoolContext(usePoolContext){ 
 }
 cond::DBSession::~DBSession(){
-  if(m_pool) delete m_pool;
-  if(m_coral) delete m_coral;
   delete m_loader;
   delete m_connectConfig;
   delete m_sessionConfig;
 }
-void cond::DBSession::open( bool usePoolContext ){
-  if(usePoolContext){
+void cond::DBSession::open(){
+  if(m_usePoolContext){
     m_loader->usePOOLContext();
   }else{
     m_loader->useOwnContext();
@@ -33,21 +34,6 @@ void cond::DBSession::open( bool usePoolContext ){
 void cond::DBSession::close(){
   m_isActive=false;
 }
-cond::PoolStorageManager& cond::DBSession::poolStorageManager( const std::string& catalog ){
-  if( m_sessionConfig->hasBlobStreamService() ){
-    m_loader->loadBlobStreamingService( m_sessionConfig->blobStreamerName() );
-  }
-  if(!m_pool){
-    m_pool=new cond::PoolStorageManager(m_con,catalog);
-  }
-  return *m_pool;
-}
-cond::RelationalStorageManager& cond::DBSession::relationalStorageManager(){
-  if(!m_coral){
-    m_coral=new cond::RelationalStorageManager(m_con,m_loader->context());
-  }
-  return *m_coral;
-}
 cond::ServiceLoader& cond::DBSession::serviceLoader(){
   return *m_loader;
 }
@@ -57,14 +43,14 @@ cond::ConnectionConfiguration& cond::DBSession::connectionConfiguration(){
 cond::SessionConfiguration& cond::DBSession::sessionConfiguration(){
   return *m_sessionConfig;
 }
-const std::string cond::DBSession::connectionString() const{
-  return m_con;
-}
-bool cond::DBSession::hasOpenConnections() const{
-  return false;
-}
 bool cond::DBSession::isActive() const{
   return m_isActive;
 }
-void cond::DBSession::purgeConnections(){ 
+void cond::DBSession::purgeConnectionPool(){
+  std::vector< seal::IHandle<coral::IConnectionService> > v_svc;
+  m_loader->context()->query(v_svc);
+  if ( v_svc.empty() ) {
+    throw cond::Exception( "Could not locate the connection service" );
+  }
+  v_svc.front()->purgeConnectionPool();
 }

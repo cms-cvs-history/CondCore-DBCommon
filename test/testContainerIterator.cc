@@ -1,5 +1,6 @@
 #include "CondCore/DBCommon/interface/Ref.h"
 #include "CondCore/DBCommon/interface/DBSession.h"
+#include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/PoolStorageManager.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
@@ -9,10 +10,12 @@
 #include <string>
 #include <iostream>
 int main(){
-  cond::DBSession* session=new cond::DBSession(std::string("sqlite_file:test2.db"));
+  cond::DBSession* session=new cond::DBSession(true);
+  session->sessionConfiguration().setMessageLevel(cond::Error);
+  session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{
-    cond::PoolStorageManager& pooldb=session->poolStorageManager("file:mycatalog.xml");
-    session->open(true);
+    cond::PoolStorageManager pooldb("sqlite_file:test2.db","file:mycatalog.xml",session);
+    session->open();
     pooldb.connect();
     pooldb.startTransaction(false);
     for(int i=0; i<10; ++i){

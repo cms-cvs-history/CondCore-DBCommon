@@ -1,17 +1,28 @@
 #include "CondCore/DBCommon/interface/RelationalStorageManager.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "CondCore/DBCommon/interface/ServiceLoader.h"
-#include "SealKernel/Context.h"
+#include "CondCore/DBCommon/interface/DBSession.h"
+#include "ServiceLoader.h"
+//#include "SealKernel/Context.h"
 #include "SealKernel/ComponentLoader.h"
 #include "SealKernel/Component.h"
-#include "RelationalAccess/IConnectionService.h"
+//#include "RelationalAccess/IConnectionService.h"
 #include "RelationalAccess/ISessionProxy.h"
 #include "RelationalAccess/ITransaction.h"
 #include "CoralBase/Exception.h"
 #include <vector>
-cond::RelationalStorageManager::RelationalStorageManager(const std::string& con, seal::Context* context):m_con(con),m_context(context),m_proxy(0){}
-cond::RelationalStorageManager::~RelationalStorageManager(){}
+cond::RelationalStorageManager::RelationalStorageManager(const std::string& con):m_con(con),m_proxy(0),m_started(false),m_sessionHandle(new cond::DBSession(false)),m_sessionShared(false){}
+cond::RelationalStorageManager::RelationalStorageManager(const std::string& con, cond::DBSession* session ):m_con(con),m_proxy(0),m_started(false),m_sessionHandle(session),m_sessionShared(true){}
+cond::RelationalStorageManager::~RelationalStorageManager(){
+  if(!m_sessionShared) delete m_sessionHandle;
+}
+cond::DBSession& cond::RelationalStorageManager::session(){
+  return *m_sessionHandle;
+}
+bool cond::RelationalStorageManager::isSessionShared() const{
+  return m_sessionShared;
+} 
 coral::ISessionProxy* cond::RelationalStorageManager::connect(cond::ConnectMode mod){
+  if(!m_started) init();
   if(mod==cond::ReadOnly){
     m_readOnlyMode=true;
   }
@@ -19,17 +30,8 @@ coral::ISessionProxy* cond::RelationalStorageManager::connect(cond::ConnectMode 
     delete m_proxy;
     m_proxy= 0;
   }
-  // Connect to the database
-  // Retrieve an IConnectionService
-  std::vector< seal::IHandle< coral::IConnectionService > > loadedServices;
-  m_context->query( loadedServices );
-  if ( loadedServices.empty() ) {
-    //m_context->query( loadedServices );
-    throw cond::Exception( std::string("RelationalStorageManager::connect: ConnectionService is not loaded") );
-  }
-  seal::IHandle< coral::IConnectionService > connectionService = loadedServices.front();
   try{
-    m_proxy = connectionService->connect(m_con, ( mod == cond::ReadOnly ) ? coral::ReadOnly : coral::Update );
+    m_proxy = connectionService()->connect(m_con, ( mod == cond::ReadOnly ) ? coral::ReadOnly : coral::Update );
   }catch (const coral::Exception& e) {
     if(m_proxy) delete m_proxy;
     m_proxy = 0;
@@ -57,7 +59,7 @@ void cond::RelationalStorageManager::disconnect(){
 }
 void cond::RelationalStorageManager::startTransaction(bool isReadOnly){
   coral::ITransaction& transaction = m_proxy->transaction();
-  bool sharedConnection = m_proxy->isConnectionShared();
+  //bool sharedConnection = m_proxy->isConnectionShared();
   bool activeTransaction = transaction.isActive();
   try {
     if(!activeTransaction) transaction.start(isReadOnly);
@@ -97,4 +99,21 @@ std::string cond::RelationalStorageManager::connectionString() const{
 }
 coral::ISessionProxy& cond::RelationalStorageManager::sessionProxy(){
   return *m_proxy;
+}
+void cond::RelationalStorageManager::init(){
+  if( !m_sessionHandle->isActive()){
+    m_sessionHandle->open();
+  }
+  m_started=true;
+}
+
+seal::IHandle<coral::IConnectionService>
+cond::RelationalStorageManager::connectionService()
+{
+  std::vector< seal::IHandle<coral::IConnectionService> > v_svc;
+  m_sessionHandle->serviceLoader().context()->query( v_svc );
+  if ( v_svc.empty() ) {
+    throw cond::Exception( "Could not locate the connection service" );
+  }
+  return v_svc.front();
 }
