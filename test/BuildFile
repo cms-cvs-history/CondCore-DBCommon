@@ -1,0 +1,17 @@
+<flags GENREFLEX_ARGS="--">
+<use name=rootrflx>
+<use name=CondCore/DBCommon>
+<library name=testDict file=""></library>
+<bin file=testCondObjRef.cc name=testCondObjRef>
+<lib name=testDict>
+</bin>
+<bin file=testCondObjCopy.cc name=testCondObjCopy>
+<lib name=testDict>
+</bin>
+<bin file=testTokenBuilder.cc name=testTokenBuilder>
+<lib name=testDict>
+</bin>
+<bin file=testContainerIterator.cc name=testContainerIterator>
+<lib name=testDict>
+</bin>
+<bin file=testServiceLoader.cc name=testServiceLoader></bin>
