@@ -1,7 +1,0 @@
-<use name=CondCore/DBCommon>
-<use name=CondFormats/Calibration>
-<use name=CondCore/IOVService>
-<bin file=testTokenBuilder.cc name=testTokenBuilder></bin>
-<bin file=testServiceLoader.cc name=testServiceLoader></bin>
-<bin file=testDelete.cc name=testDelete></bin>
-<bin file=testDBWriterUpdate.cc name=testDBWriterUpdate></bin>
