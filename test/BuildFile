@@ -8,6 +8,9 @@
 <bin file=testCondObjCopy.cc name=testCondObjCopy>
 <lib name=testDict>
 </bin>
+<bin file=testGenericCondObjCopy.cc name=testGenericCondObjCopy>
+<lib name=testDict>
+</bin>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
 <lib name=testDict>
 </bin>
