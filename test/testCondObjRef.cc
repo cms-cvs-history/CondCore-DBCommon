@@ -8,12 +8,14 @@
 #include <exception>
 #include <string>
 #include <iostream>
+#include <cstdlib>
 int main(){
   cond::DBSession* session=new cond::DBSession(true);
   session->sessionConfiguration().setMessageLevel(cond::Error);
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{
     session->open();
+    ::putenv(const_cast<char*>("CORAL_AUTH_PATH=/afs/cern.ch/user/x/xiezhen/localhome/work/CMSSW/dev130/CMSSW_1_2_0/src/CondCore/DBCommon/test/auth"));
     cond::PoolStorageManager pooldb("sqlite_file:test.db","file:mycatalog.xml",session);
     pooldb.connect();
     testCondObj* myobj=new testCondObj;
@@ -30,9 +32,13 @@ int main(){
     std::cout<<"mem pointer "<<myinstance.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
     std::cout<<"read back 100 "<<myinstance->data[100]<<std::endl;
-    pooldb.commit();
+    std::cout<<"committed"<<std::endl;
+    std::cout<<myobj<<std::endl;
+    std::cout<<"hemm"<<std::endl;
+    //std::cout<<myobj->data[1]<<std::endl;
     myinstance->data[1]="updatedstring";
     myinstance->data.insert(std::make_pair(1000,"newstring"));
+    pooldb.commit();
     pooldb.startTransaction(false);
     myinstance.markUpdate();
     token=myref.token();
