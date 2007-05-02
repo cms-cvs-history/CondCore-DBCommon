@@ -33,6 +33,16 @@ int main(){
       std::cout<<"error "<<p.result()<<std::endl;
       exit(1);
     }
+    p.reset("frontier://CoralDev/CMS_COND_GENERAL");
+    if( p.result() != std::string("/frontier/dev/CMS_COND_GENERAL") ){
+      std::cout<<"error "<<p.result()<<std::endl;
+      exit(1);
+    }
+    p.reset("sqlite_file://int-CMS_COND_ECAL.db");
+    if( p.result() != std::string("/sqlite/int/CMS_COND_ECAL") ){
+      std::cout<<"error "<<p.result()<<std::endl;
+      exit(1);
+    }
   }catch (const cond::Exception &e){
     std::cout << "test ERROR: "<< e.what() << std::endl;
   }catch(...){
