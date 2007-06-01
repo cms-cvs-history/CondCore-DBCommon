@@ -18,3 +18,5 @@
 <lib name=testDict>
 </bin>
 <bin file=testServiceLoader.cc name=testServiceLoader></bin>
+<bin file=testDBCatalog.cc name=testDBCatalog></bin>
+
