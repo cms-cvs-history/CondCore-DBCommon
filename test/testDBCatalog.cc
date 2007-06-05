@@ -5,10 +5,10 @@
 int main(){
   cond::DBCatalog mycat;
   std::string lfn("/dev/CMS_COND_GENERAL");
-  bool isLFN=mycat.isLFN(lfn);
-  std::cout<<lfn<<" is LFN"<<std::endl;
+  std::string logicalServiceName=mycat.logicalserviceName(lfn);
   std::cout<<"cat name "<<mycat.defaultDevCatalogName()<<std::endl;
-  if(isLFN){
+  if( !logicalServiceName.empty() ){
+    std::cout<<"service name "<<mycat.logicalserviceName(lfn)<<std::endl;
     mycat.poolCatalog().setWriteCatalog(mycat.defaultDevCatalogName());
     mycat.poolCatalog().connect();
     mycat.poolCatalog().start();
