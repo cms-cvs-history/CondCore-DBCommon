@@ -1,6 +1,6 @@
 block CondDBCommon = {
                         string connect = "protocol://db/schema"
-                        untracked string catalog = "protocol://db/catalog"
+                        untracked string catalog = ""
                         string timetype = "runnumber"
                         PSet DBParameters = {
                           untracked string authenticationPath="."
