@@ -131,4 +131,14 @@
       <lfn name="/dev/CMS_COND_BEAMSPOT"/>
     </logical>
   </File>
+
+  <File ID="F4C8CDA5-FF2D-DC11-BC57-0016761581E6">
+    <physical>
+       <pfn filetype="POOL_RDBMS" name="oracle://cms_orcoff_int2r/CMS_COND_FRONTIER"/>
+      <pfn filetype="POOL_RDBMS" name="frontier://FrontierDev/CMS_COND_FRONTIER"/>
+    </physical>
+    <logical>
+      <lfn name="/dev/CMS_COND_FRONTIER"/>
+    </logical>
+  </File>
 </POOLFILECATALOG>
