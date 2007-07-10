@@ -1,4 +1,4 @@
-#include "CondCore/DBCommon/interface/Ref.h"
+#include "CondCore/DBCommon/interface/TypedRef.h"
 #include "CondCore/DBCommon/interface/DBSession.h"
 #include "CondCore/DBCommon/interface/Exception.h"
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
@@ -10,7 +10,7 @@
 #include <iostream>
 #include <cstdlib>
 int main(){
-  cond::DBSession* session=new cond::DBSession(true);
+  cond::DBSession* session=new cond::DBSession;
   session->sessionConfiguration().setMessageLevel(cond::Error);
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{

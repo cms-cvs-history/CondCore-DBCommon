@@ -6,4 +6,4 @@
 <lib name=testDict>
 </bin>
 <bin file=testDBCatalog.cc name=testDBCatalog></bin>
-
+<bin file=testMultipleConnection.cc name=testMultipleConnection></bin>
