@@ -11,3 +11,6 @@
 <bin file=testCondObjCopy.cc name=testCondObjCopy>
 <lib name=testDict>
 </bin>
+<bin file=testContainerIterator.cc name=testContainerIterator>
+<lib name=testDict>
+</bin>
