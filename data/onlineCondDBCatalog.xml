@@ -132,7 +132,7 @@
     </logical>
   </File>
 
-  <File ID="BCD9CE02-6631-DC11-B212-0016761581E6">
+  <File ID="F4C8CDA5-FF2D-DC11-BC57-0016761581E6">
     <physical>
        <pfn filetype="POOL_RDBMS" name="oracle://orcon/CMS_COND_FRONTIER"/>
        <pfn filetype="POOL_RDBMS" name="frontier://FrontierOn/CMS_COND_FRONTIER"$    
