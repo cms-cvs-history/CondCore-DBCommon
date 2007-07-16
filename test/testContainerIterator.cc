@@ -6,6 +6,7 @@
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "CondCore/DBCommon/interface/ContainerIterator.h"
+#include "CondCore/DBCommon/interface/TypedRef.h"
 #include "testCondObj.h"
 #include <string>
 #include <iostream>
@@ -18,6 +19,7 @@ int main(){
   session->open();
   try{
     conHandler.connect(session);
+    std::string token;
     cond::Connection* myconnection=conHandler.getConnection("mydata");    
     cond::PoolTransaction& poolTransaction=myconnection->poolTransaction(false);
     poolTransaction.start();
@@ -27,20 +29,34 @@ int main(){
       myobj->data.insert(std::make_pair(100+i,"strangestring2"));
       cond::TypedRef<testCondObj> myref(poolTransaction,myobj);
       myref.markWrite("mycontainer");
-      std::string token=myref.token();
-      std::cout<<"token "<<i<<" "<<token<<std::endl;
+      token=myref.token();
+      //std::cout<<"token "<<i<<" "<<token<<std::endl;
     }
-    //poolTransaction.commit();
-    cond::PoolContainerManager poolContainers(poolTransaction);
-    //poolTransaction.start();
+    poolTransaction.commit();
+    std::cout<<"about to start the second part"<<std::endl;
+    cond::PoolTransaction& coltrans=myconnection->poolTransaction(true);
+    coltrans.start();
+    cond::TypedRef<testCondObj> myinstance(coltrans,token);
+    std::cout<<"mem pointer "<<myinstance.ptr()<<std::endl;
+    std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
+    std::cout<<"read back 100 "<<myinstance->data[100]<<std::endl;
+    
+    cond::PoolContainerManager poolContainers(coltrans);
     std::vector<std::string> containers;
     poolContainers.listAll(containers);
     std::cout<<"number of containers "<<containers.size()<<std::endl;
     for(std::vector<std::string>::iterator it=containers.begin();
 	it!=containers.end(); ++it){
       std::cout<<*it<<std::endl;
+      cond::ContainerIterator<testCondObj>* cit=poolContainers.newContainerIterator<testCondObj>(*it);
+      std::cout<<"collection name "<<cit->name()<<std::endl;
+      while(cit->next()){
+	std::cout<<"token "<<cit->dataToken()<<std::endl;
+	std::cout<<"ref "<<cit->dataRef().token()<<std::endl;
+      }
+      delete cit;
     }
-    poolTransaction.commit();
+    coltrans.commit();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(std::exception& er){
