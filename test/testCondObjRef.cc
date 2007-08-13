@@ -15,7 +15,7 @@ int main(){
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
   try{
     session->open();
-    ::putenv(const_cast<char*>("CORAL_AUTH_PATH=/afs/cern.ch/user/x/xiezhen/localhome/work/CMSSW/dev130/CMSSW_1_2_0/src/CondCore/DBCommon/test/auth"));
+    //::putenv(const_cast<char*>("CORAL_AUTH_PATH=/afs/cern.ch/user/x/xiezhen/localhome/work/CMSSW/dev130/CMSSW_1_2_0/src/CondCore/DBCommon/test/auth"));
     cond::PoolStorageManager pooldb("sqlite_file:test.db","file:mycatalog.xml",session);
     pooldb.connect();
     testCondObj* myobj=new testCondObj;
