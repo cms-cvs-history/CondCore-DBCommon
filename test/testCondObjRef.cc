@@ -16,7 +16,7 @@ int main(){
   try{
     session->open();
     //::putenv(const_cast<char*>("CORAL_AUTH_PATH=/afs/cern.ch/user/x/xiezhen/localhome/work/CMSSW/dev130/CMSSW_1_2_0/src/CondCore/DBCommon/test/auth"));
-    cond::PoolStorageManager pooldb("sqlite_file:test.db","file:mycatalog.xml",session);
+    cond::PoolStorageManager pooldb("sqlite_file:test.db",session);
     pooldb.connect();
     testCondObj* myobj=new testCondObj;
     myobj->data.insert(std::make_pair(1,"strangestring1"));

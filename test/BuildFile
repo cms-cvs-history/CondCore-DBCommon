@@ -3,10 +3,8 @@
 <use name=CondCore/DBCommon>
 <library name=testDict file=""></library>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
-<bin file=testTokenAnalyzer.cc name=testTokenAnalyzer>
 <lib name=testDict>
 </bin>
-<bin file=testDBCatalog.cc name=testDBCatalog></bin>
 <bin file=testMultipleConnection.cc name=testMultipleConnection>
 <lib name=testDict>
 </bin>
