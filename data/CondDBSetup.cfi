@@ -1,4 +1,5 @@
 block CondDBSetup = {
+		       untracked string catalog = ""
                        PSet DBParameters = {
                           untracked string authenticationPath="."
 	                  untracked int32 messageLevel=0
