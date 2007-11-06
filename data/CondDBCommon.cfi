@@ -1,11 +1,9 @@
 block CondDBCommon = {
                         string connect = "protocol://db/schema"
-                        untracked string catalog = ""
                         string timetype = "runnumber"
                         PSet DBParameters = {
                           untracked string authenticationPath="."
                           untracked int32 messageLevel=0
-                          untracked bool loadBlobStreamer = false
                           untracked int32 connectionTimeOut = 600
                           untracked int32 connectionRetrialPeriod = 30
                           untracked int32 connectionRetrialTimeOut = 180
