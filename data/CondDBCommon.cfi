@@ -4,11 +4,11 @@ block CondDBCommon = {
                         PSet DBParameters = {
                           untracked string authenticationPath="."
                           untracked int32 messageLevel=0
-                          untracked int32 connectionTimeOut = 600
+                          untracked int32 connectionTimeOut = 0
                           untracked int32 connectionRetrialPeriod = 30
                           untracked int32 connectionRetrialTimeOut = 180
                           untracked bool enableConnectionSharing = false
                           untracked bool enableReadOnlySessionOnUpdateConnection = false
-                          untracked bool enablePoolAutomaticCleanUp = true
+                          untracked bool enablePoolAutomaticCleanUp = false
                         } 
                      }
