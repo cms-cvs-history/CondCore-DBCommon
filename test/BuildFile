@@ -8,6 +8,9 @@
 <bin file=testMultipleConnection.cc name=testMultipleConnection>
 <lib name=testDict>
 </bin>
+<bin file=testSingleConnection.cc name=testSingleConnection>
+<lib name=testDict>
+</bin>
 <bin file=testCondObjCopy.cc name=testCondObjCopy>
 <lib name=testDict>
 </bin>

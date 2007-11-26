@@ -21,8 +21,8 @@ int main(){
     conHandler.connect(session);
     std::string token;
     cond::Connection* myconnection=conHandler.getConnection("mydata");    
-    cond::PoolTransaction& poolTransaction=myconnection->poolTransaction(false);
-    poolTransaction.start();
+    cond::PoolTransaction& poolTransaction=myconnection->poolTransaction();
+    poolTransaction.start(false);
     for(int i=0; i<10; ++i){
       testCondObj* myobj=new testCondObj;
       myobj->data.insert(std::make_pair(1+i,"strangestring1"));
@@ -34,8 +34,8 @@ int main(){
     }
     poolTransaction.commit();
     std::cout<<"about to start the second part"<<std::endl;
-    cond::PoolTransaction& coltrans=myconnection->poolTransaction(true);
-    coltrans.start();
+    cond::PoolTransaction& coltrans=myconnection->poolTransaction();
+    coltrans.start(true);
     cond::TypedRef<testCondObj> myinstance(coltrans,token);
     std::cout<<"mem pointer "<<myinstance.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
