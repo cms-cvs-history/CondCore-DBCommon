@@ -11,8 +11,8 @@ cond::PoolTransaction::PoolTransaction(cond::PoolConnectionProxy* parentConnecti
 cond::PoolTransaction::~PoolTransaction(){}
 void 
 cond::PoolTransaction::start(bool isReadOnly){
-  if(!m_datasvc) throw cond::Exception("PoolTransaction::start: database not connected");
   this->NotifyStartOfTransaction();
+  if(!m_datasvc) throw cond::Exception("PoolTransaction::start: database not connected");
   if(!isReadOnly){
     m_datasvc->transaction().start( pool::ITransaction::UPDATE );
   }else{

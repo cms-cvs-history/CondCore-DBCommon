@@ -23,6 +23,14 @@ cond::PoolConnectionProxy::PoolConnectionProxy(const std::string& con,
   m_catalog->setWriteCatalog(catconnect);
   m_catalog->connect();
   m_catalog->start();
+
+  m_datasvc=pool::DataSvcFactory::instance(m_catalog);
+  pool::DatabaseConnectionPolicy policy;
+  policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::CREATE);
+  policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
+  policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
+  m_datasvc->session().setDefaultConnectionPolicy(policy);
+
 }
 cond::PoolConnectionProxy::~PoolConnectionProxy(){
   //std::cout<<"PoolConnectionProxy::~PoolConnectionProxy"<<std::endl;
@@ -30,8 +38,8 @@ cond::PoolConnectionProxy::~PoolConnectionProxy(){
   m_catalog->disconnect();
   //m_datasvc->session().disconnectAll();
   delete m_transaction;
-  delete m_datasvc;
   delete m_catalog;
+  delete m_datasvc;
   m_datasvc=0;
 }
 cond::ITransaction&  
@@ -66,12 +74,13 @@ cond::PoolConnectionProxy::poolDataSvc(){
 }
 void 
 cond::PoolConnectionProxy::connect(){
-  m_datasvc=pool::DataSvcFactory::instance(m_catalog);
+  /*m_datasvc=pool::DataSvcFactory::instance(m_catalog);
   pool::DatabaseConnectionPolicy policy;
   policy.setWriteModeForNonExisting(pool::DatabaseConnectionPolicy::CREATE);
   policy.setWriteModeForExisting(pool::DatabaseConnectionPolicy::UPDATE);
   policy.setReadMode(pool::DatabaseConnectionPolicy::READ);
   m_datasvc->session().setDefaultConnectionPolicy(policy);
+  */
   if(m_connectionTimeOut>0){
     m_timer.restart();
   }
