@@ -1,6 +1,5 @@
 #include "CondCore/DBCommon/interface/TokenBuilder.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "testCondObj.h"
 #include <string>
 #include <iostream>
 int main(){
