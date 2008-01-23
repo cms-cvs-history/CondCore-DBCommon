@@ -17,3 +17,5 @@
 <bin file=testContainerIterator.cc name=testContainerIterator>
 <lib name=testDict>
 </bin>
+<bin file=testSequenceManager.cc name=testSequenceManager>
+</bin>
