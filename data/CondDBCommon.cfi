@@ -1,6 +1,5 @@
 block CondDBCommon = {
                         string connect = "protocol://db/schema"
-                        string timetype = "runnumber"
                         PSet DBParameters = {
                           untracked string authenticationPath="."
                           untracked int32 messageLevel=0
