@@ -33,4 +33,5 @@ int main(){
   std::cout<<"Time type "<< cond::TimeTypeList[cond::runnumber]<<std::endl;
   std::cout<<"Time type "<< cond::TimeTypeList[cond::timestamp]<<std::endl;
   std::cout<<"Time type "<<  cond::TimeTypeList[cond::lumiid]<<std::endl;
+  std::cout<<"Time Limit "<<cond::TIMELIMIT<<std::endl;
 }
