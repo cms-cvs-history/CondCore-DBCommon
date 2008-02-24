@@ -1,6 +1,7 @@
 #include "CondCore/DBCommon/interface/TokenBuilder.h"
 #include "CondCore/DBCommon/interface/TokenInterpreter.h" 
 #include "CondCore/DBCommon/interface/Exception.h"
+#include "CondCore/DBCommon/interface/Time.h"
 #include <string>
 #include <iostream>
 int main(){
@@ -28,4 +29,8 @@ int main(){
   std::string containerName=tokenteller.containerName();
   std::string className=tokenteller.className();
   std::cout<<"token "<<tok1<<" belongs to container "<<containerName<<" class "<<className<<std::endl;
+  //cond::TimeTypeList timetypelist;
+  std::cout<<"Time type "<< cond::TimeTypeList[cond::runnumber]<<std::endl;
+  std::cout<<"Time type "<< cond::TimeTypeList[cond::timestamp]<<std::endl;
+  std::cout<<"Time type "<<  cond::TimeTypeList[cond::lumiid]<<std::endl;
 }
