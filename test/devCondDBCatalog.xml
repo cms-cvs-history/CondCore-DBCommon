@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!-- Edited By POOL -->
+<!DOCTYPE POOLFILECATALOG SYSTEM "InMemory">
+<POOLFILECATALOG>
+  <File ID="961A163E-6710-DC11-BE4E-0016761581E6">
+    <physical>
+      <pfn filetype="POOL_RDBMS" name="oracle://cms_orcoff_int2r/CMS_COND_GENERAL"/>
+      <pfn filetype="POOL_RDBMS" name="frontier://cmsfrontier.cern.ch:8000/FrontierInt/CMS_COND_GENERAL"/></physical>
+    <logical>
+      <lfn name="/dev/CMS_COND_GENERAL"/>
+    </logical>
+  </File>
+
+
+</POOLFILECATALOG>
