@@ -1,6 +1,7 @@
 <flags GENREFLEX_ARGS="--">
 <use name=rootrflx>
 <use name=CondCore/DBCommon>
+<use name=FWCore/PluginManager>
 <library name=testDict file=""></library>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
 <lib name=testDict>
@@ -18,4 +19,6 @@
 <lib name=testDict>
 </bin>
 <bin file=testSequenceManager.cc name=testSequenceManager>
+</bin>
+<bin file=testTechnologyPlugin.cc name=testTechnologyPlugin>
 </bin>
