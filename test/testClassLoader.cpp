@@ -1,3 +1,5 @@
+#include "FWCore/Utilities/interface/Exception.h"
+#include "FWCore/PluginManager/interface/ProblemTracker.h"
 #include "CondCore/DBCommon/interface/ClassInfoLoader.h"
 #include "StorageSvc/DbReflex.h"
 #include <string>
@@ -13,6 +15,8 @@ std::string const tokens[] = {
 size_t N=2;
 
 int main() {
+
+  edm::AssertHandler ah;
   
   for (size_t i=0; i<N; i++) {
     std::string const & token = tokens[i];
