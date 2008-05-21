@@ -1,3 +1,8 @@
+#include "CondCore/DBCommon/interface/ClassInfoLoader.h"
+#include "StorageSvc/DbReflex.h"
+#include <string>
+
+#include <iostream>
 
 
 std::string const tokens[] {
