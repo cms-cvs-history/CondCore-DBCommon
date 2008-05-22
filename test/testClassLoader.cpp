@@ -27,6 +27,7 @@ int main() {
 		<< " for " << token << std::endl;
     } catch (cms::Exception const & e) {
       std::cout << e.what() << std::endl;
+    }
   }
 
   return 0;
