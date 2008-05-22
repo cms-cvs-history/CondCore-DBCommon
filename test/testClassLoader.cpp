@@ -21,9 +21,12 @@ int main() {
   
   for (size_t i=0; i<N; i++) {
     std::string const & token = tokens[i];
-    ROOT::Reflex::Type type = cond::reflexTypeByToken(token);
-    std::cout << "class " << type.Name(ROOT::Reflex::SCOPED)
-	      << " for " << token << std::endl;
+    try {
+      ROOT::Reflex::Type type = cond::reflexTypeByToken(token);
+      std::cout << "class " << type.Name(ROOT::Reflex::SCOPED)
+		<< " for " << token << std::endl;
+    } catch (cms::Exception const & e) {
+      std::cout << e.what() << std::endl;
   }
 
   return 0;
