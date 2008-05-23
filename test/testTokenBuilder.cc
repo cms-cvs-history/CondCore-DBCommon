@@ -30,8 +30,8 @@ int main(){
   std::string className=tokenteller.className();
   std::cout<<"token "<<tok1<<" belongs to container "<<containerName<<" class "<<className<<std::endl;
   //cond::TimeTypeList timetypelist;
-  std::cout<<"Time type "<< cond::TimeTypeList[cond::runnumber]<<std::endl;
-  std::cout<<"Time type "<< cond::TimeTypeList[cond::timestamp]<<std::endl;
-  std::cout<<"Time type "<<  cond::TimeTypeList[cond::lumiid]<<std::endl;
+  std::cout<<"Time type "<< cond::timeTypeList[cond::runnumber]<<std::endl;
+  std::cout<<"Time type "<< cond::timeTypeList[cond::timestamp]<<std::endl;
+  std::cout<<"Time type "<<  cond::timeTypeList[cond::lumiid]<<std::endl;
   std::cout<<"Time Limit "<<cond::TIMELIMIT<<std::endl;
 }
