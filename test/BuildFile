@@ -26,3 +26,5 @@
 </bin>
 <bin file=testTime.cpp name=testCondTime>
 </bin>
+<bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
+</bin>
