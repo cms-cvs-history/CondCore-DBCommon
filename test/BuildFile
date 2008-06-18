@@ -25,6 +25,8 @@
 <bin file=testClassLoader.cpp name=testClassLoader>
 </bin>
 <bin file=testTime.cpp name=testCondTime>
+<use name=DataFormats/Provenance>
 </bin>
 <bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
+</bin>
 </bin>
