@@ -29,4 +29,4 @@
 </bin>
 <bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
 </bin>
-</bin>
+
