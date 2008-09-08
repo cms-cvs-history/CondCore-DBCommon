@@ -1,5 +1,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #include "FWCore/PluginManager/interface/ProblemTracker.h"
+#include "FWCore/PluginManager/interface/PluginManager.h"
+#include "FWCore/PluginManager/interface/standard.h"
 #include "CondCore/DBCommon/interface/ClassInfoLoader.h"
 #include "StorageSvc/DbReflex.h"
 #include <string>
@@ -16,8 +18,11 @@ std::string const tokens[] = {
 size_t N=3;
 
 int main() {
+  edmplugin::PluginManager::Config config;
+  edmplugin::PluginManager::configure(edmplugin::standard::config());
 
-  edm::AssertHandler ah;
+
+  //edm::AssertHandler ah;
   
   for (size_t i=0; i<N; i++) {
     std::string const & token = tokens[i];
