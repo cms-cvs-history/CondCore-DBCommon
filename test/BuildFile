@@ -31,4 +31,6 @@
 </bin>
 <bin file=unittest_DBLogger2.cpp name=unittest_DBLogger2>
 </bin>
+<bin file=testCoralSQLPrinting.cc name=testCoralSQLPrinting>
+</bin>
 
