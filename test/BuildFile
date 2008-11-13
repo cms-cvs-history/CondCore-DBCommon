@@ -22,6 +22,8 @@
 </bin>
 <bin file=testTechnologyPlugin.cc name=testTechnologyPlugin>
 </bin>
+<bin file=testCoralContext.cc name=testCoralContext>
+</bin>
 <bin file=testClassLoader.cpp name=testClassLoader>
 </bin>
 <bin file=testTime.cpp name=testCondTime>
