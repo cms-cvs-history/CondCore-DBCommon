@@ -4,12 +4,16 @@
 #include "CondCore/DBCommon/interface/SessionConfiguration.h"
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "CondCore/DBCommon/interface/MessageLevel.h"
+#include "FWCore/PluginManager/interface/PluginManager.h"
+#include "FWCore/PluginManager/interface/standard.h"
 #include "testCondObj.h"
 #include <exception>
 #include <string>
 #include <iostream>
 #include <cstdlib>
 int main(){
+  edmplugin::PluginManager::Config config;
+  edmplugin::PluginManager::configure(edmplugin::standard::config());
   cond::DBSession* session=new cond::DBSession;
   session->sessionConfiguration().setMessageLevel(cond::Error);
   session->sessionConfiguration().setAuthenticationMethod(cond::XML);
@@ -62,7 +66,6 @@ int main(){
       std::cout<<"object deleted, null pointer retrieved"<<std::endl;
     }
     pooldb.disconnect();
-    session->close();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(std::exception& er){
