@@ -34,4 +34,14 @@
 </bin>
 <bin file=testCoralSQLPrinting.cc name=testCoralSQLPrinting>
 </bin>
+<bin file=testDbConnection.cc name=testDbConnection>
+</bin>
+<bin file=testDbSession.cc name=testDbSession>
+</bin>
+<bin file=testDbSessionIO.cc name=testDbSessionIO>
+</bin>
+<bin file=testDbTransaction.cc name=testDbTransaction>
+</bin>
+<bin file=testDbScopedTransaction.cc name=testDbScopedTransaction>
+</bin>
 
