@@ -1,11 +1,8 @@
-#include "CondCore/DBCommon/interface/ConnectionHandler.h"
-#include "CondCore/DBCommon/interface/DBSession.h"
-#include "CondCore/DBCommon/interface/SessionConfiguration.h"
+#include "CondCore/DBCommon/interface/DbConnection.h"
+#include "CondCore/DBCommon/interface/DbTransaction.h"
 #include "CondCore/DBCommon/interface/PoolContainerManager.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "CondCore/DBCommon/interface/MessageLevel.h"
 #include "CondCore/DBCommon/interface/ContainerIterator.h"
-#include "CondCore/DBCommon/interface/TypedRef.h"
 #include "FWCore/PluginManager/interface/PluginManager.h"
 #include "FWCore/PluginManager/interface/standard.h"
 #include "testCondObj.h"
@@ -14,52 +11,46 @@
 int main(){
   edmplugin::PluginManager::Config config;
   edmplugin::PluginManager::configure(edmplugin::standard::config());
-  cond::DBSession* session=new cond::DBSession;
-  session->configuration().setMessageLevel(cond::Error);
-  session->configuration().setAuthenticationMethod(cond::XML);
-  static cond::ConnectionHandler& conHandler=cond::ConnectionHandler::Instance();
-  conHandler.registerConnection("mydata","sqlite_file:mydata.db",0);
-  session->open();
+  cond::DbConnection connection;
+  connection.configuration().setMessageLevel(coral::Error);
+  connection.configure();  
   try{
-    conHandler.connect(session);
+    cond::DbSession session = connection.createSession();
+    session.open("sqlite_file:mydata.db");
     std::string token;
-    cond::Connection* myconnection=conHandler.getConnection("mydata");    
-    cond::PoolTransaction& poolTransaction=myconnection->poolTransaction();
-    poolTransaction.start(false);
+    session.transaction().start(false);
     for(int i=0; i<10; ++i){
       testCondObj* myobj=new testCondObj;
       myobj->data.insert(std::make_pair(1+i,"strangestring1"));
       myobj->data.insert(std::make_pair(100+i,"strangestring2"));
-      cond::TypedRef<testCondObj> myref(poolTransaction,myobj);
-      myref.markWrite("mycontainer");
-      token=myref.token();
+      pool::Ref<testCondObj> myref = session.storeObject(myobj, "mycontainer");
+      token=myref.toString();
       //std::cout<<"token "<<i<<" "<<token<<std::endl;
     }
-    poolTransaction.commit();
+    session.transaction().commit();
     std::cout<<"about to start the second part"<<std::endl;
-    cond::PoolTransaction& coltrans=myconnection->poolTransaction();
-    coltrans.start(true);
-    cond::TypedRef<testCondObj> myinstance(coltrans,token);
+    session.transaction().start(true);
+    pool::Ref<testCondObj> myinstance = session.getTypedObject<testCondObj>(token);
     std::cout<<"mem pointer "<<myinstance.ptr()<<std::endl;
     std::cout<<"read back 1   "<<myinstance->data[1]<<std::endl;
     std::cout<<"read back 100 "<<myinstance->data[100]<<std::endl;
     
-    cond::PoolContainerManager poolContainers(coltrans);
+    cond::PoolContainerManager poolContainers( session );
     std::vector<std::string> containers;
     poolContainers.listAll(containers);
     std::cout<<"number of containers "<<containers.size()<<std::endl;
     for(std::vector<std::string>::iterator it=containers.begin();
-	it!=containers.end(); ++it){
+        it!=containers.end(); ++it){
       std::cout<<*it<<std::endl;
       cond::ContainerIterator<testCondObj>* cit=poolContainers.newContainerIterator<testCondObj>(*it);
       std::cout<<"collection name "<<cit->name()<<std::endl;
       while(cit->next()){
-	std::cout<<"token "<<cit->dataToken()<<std::endl;
-	std::cout<<"ref "<<cit->dataRef().token()<<std::endl;
+        std::cout<<"token "<<cit->dataToken()<<std::endl;
+        std::cout<<"ref "<<cit->dataRef().token()<<std::endl;
       }
       delete cit;
     }
-    coltrans.commit();
+    session.transaction().commit();
   }catch(cond::Exception& er){
     std::cout<<er.what()<<std::endl;
   }catch(std::exception& er){
@@ -67,5 +58,4 @@ int main(){
   }catch(...){
     std::cout<<"Funny error"<<std::endl;
   }
-  delete session;
 }
