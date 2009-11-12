@@ -1,7 +1,9 @@
 <flags GENREFLEX_ARGS="--">
 <use name=rootrflx>
+<use name=Collection>
 <use name=CondCore/DBCommon>
-<use name=DataFormats/StdDictionaries>
+<use name=CondFormats/Common>
+<<use name=DataFormats/StdDictionaries>
 <use name=FWCore/PluginManager>
 <library name=testDict file=""></library>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
