@@ -3,7 +3,7 @@
 <use name=Collection>
 <use name=CondCore/DBCommon>
 <use name=CondFormats/Common>
-<<use name=DataFormats/StdDictionaries>
+<use name=DataFormats/StdDictionaries>
 <use name=FWCore/PluginManager>
 <library name=testDict file=""></library>
 <bin file=testTokenBuilder.cc name=testTokenBuilder>
