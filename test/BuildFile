@@ -27,6 +27,8 @@
 </bin>
 <bin file=testClassLoader.cpp name=testClassLoader>
 </bin>
+<bin name=testClassIDCapability file=testClassIDCapability.cpp>
+</bin>
 
 <bin file=testTime.cpp name=testCondTime>
 <use name=DataFormats/Provenance>
