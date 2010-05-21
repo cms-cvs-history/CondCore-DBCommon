@@ -18,28 +18,23 @@
 <bin file=testCondObjCopy.cc name=testCondObjCopy>
 <lib name=testDict>
 </bin>
-#<bin file=testContainerIterator.cc name=testContainerIterator>
-#<lib name=testDict>
-</bin>
 <bin file=testSequenceManager.cc name=testSequenceManager>
 </bin>
-#<bin file=testTechnologyPlugin.cc name=testTechnologyPlugin>
-#</bin>
-<bin file=testClassLoader.cpp name=testClassLoader>
+<bin file=testTechnologyPlugin.cc name=testTechnologyPlugin>
 </bin>
-<bin name=testClassIDCapability file=testClassIDCapability.cpp>
+<bin file=testClassLoader.cpp name=testClassLoader>
 </bin>
 
 <bin file=testTime.cpp name=testCondTime>
 <use name=DataFormats/Provenance>
 </bin>
 
-#<bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
-#</bin>
-#<bin file=unittest_DBLogger2.cpp name=unittest_DBLogger2>
-#</bin>
-#<bin file=testCoralSQLPrinting.cc name=testCoralSQLPrinting>
-#</bin>
+<bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
+</bin>
+<bin file=unittest_DBLogger2.cpp name=unittest_DBLogger2>
+</bin>
+<bin file=testCoralSQLPrinting.cc name=testCoralSQLPrinting>
+</bin>
 <bin file=testDbConnection.cc name=testDbConnection>
 </bin>
 <bin file=testDbSession.cc name=testDbSession>
