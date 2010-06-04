@@ -1,7 +1,7 @@
 #include "CondCore/DBCommon/interface/TypedRef.h"
 #include "CondCore/DBCommon/interface/DBSession.h"
 #include "CondCore/DBCommon/interface/Exception.h"
-#include "CondCore/DBCommon/interface/SessionConfiguration.h"
+
 #include "CondCore/DBCommon/interface/ConnectMode.h"
 #include "FWCore/PluginManager/interface/PluginManager.h"
 #include "FWCore/PluginManager/interface/standard.h"
