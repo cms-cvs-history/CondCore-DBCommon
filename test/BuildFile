@@ -6,9 +6,6 @@
 <use name=DataFormats/StdDictionaries>
 <use name=FWCore/PluginManager>
 <library name=testDict file=""></library>
-<bin file=testTokenBuilder.cc name=testTokenBuilder>
-<lib name=testDict>
-</bin>
 <bin file=testMultipleConnection.cc name=testMultipleConnection>
 <lib name=testDict>
 </bin>
@@ -30,8 +27,6 @@
 </bin>
 
 <bin file=unittest_DBLogger.cpp name=unittest_DBLogger>
-</bin>
-<bin file=unittest_DBLogger2.cpp name=unittest_DBLogger2>
 </bin>
 <bin file=testCoralSQLPrinting.cc name=testCoralSQLPrinting>
 </bin>
