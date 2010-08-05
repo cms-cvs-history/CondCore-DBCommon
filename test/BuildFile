@@ -39,5 +39,6 @@
 <bin file=testDbScopedTransaction.cc name=testDbScopedTransaction>
 </bin>
 <bin file=testBlobStreaming.cpp name=testBlobStreaming>
+<use name=DataFormats/StdDictionaries>
 </bin>
 
